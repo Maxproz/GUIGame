@@ -8,6 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		550831FD1D8CBBB200AC374B /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 550831FC1D8CBBB200AC374B /* main.cpp */; };
+		550832041D8CBCF900AC374B /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 550832031D8CBCF900AC374B /* OpenGL.framework */; };
+		550832061D8CBD0000AC374B /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 550832051D8CBD0000AC374B /* GLUT.framework */; };
+		550832081D8CBE8F00AC374B /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 550832071D8CBE8F00AC374B /* Cocoa.framework */; };
+		5508320A1D8CBE9E00AC374B /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 550832091D8CBE9E00AC374B /* IOKit.framework */; };
+		5508320C1D8CBEA300AC374B /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5508320B1D8CBEA300AC374B /* CoreVideo.framework */; };
+		550832221D8CD1E600AC374B /* libglfw3.3.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 550832211D8CD1E600AC374B /* libglfw3.3.2.dylib */; };
+		550832241D8CD58E00AC374B /* libGLEW.2.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 550832231D8CD58E00AC374B /* libGLEW.2.0.0.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +32,13 @@
 /* Begin PBXFileReference section */
 		550831F91D8CBBB200AC374B /* GUIGame */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = GUIGame; sourceTree = BUILT_PRODUCTS_DIR; };
 		550831FC1D8CBBB200AC374B /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		550832031D8CBCF900AC374B /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		550832051D8CBD0000AC374B /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
+		550832071D8CBE8F00AC374B /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		550832091D8CBE9E00AC374B /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
+		5508320B1D8CBEA300AC374B /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		550832211D8CD1E600AC374B /* libglfw3.3.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libglfw3.3.2.dylib; path = ../../../../usr/local/Cellar/glfw3/3.2.1/lib/libglfw3.3.2.dylib; sourceTree = "<group>"; };
+		550832231D8CD58E00AC374B /* libGLEW.2.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libGLEW.2.0.0.dylib; path = ../../../../usr/local/lib/libGLEW.2.0.0.dylib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,6 +46,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				550832241D8CD58E00AC374B /* libGLEW.2.0.0.dylib in Frameworks */,
+				550832221D8CD1E600AC374B /* libglfw3.3.2.dylib in Frameworks */,
+				5508320C1D8CBEA300AC374B /* CoreVideo.framework in Frameworks */,
+				5508320A1D8CBE9E00AC374B /* IOKit.framework in Frameworks */,
+				550832081D8CBE8F00AC374B /* Cocoa.framework in Frameworks */,
+				550832061D8CBD0000AC374B /* GLUT.framework in Frameworks */,
+				550832041D8CBCF900AC374B /* OpenGL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -41,6 +62,13 @@
 		550831F01D8CBBB200AC374B = {
 			isa = PBXGroup;
 			children = (
+				550832231D8CD58E00AC374B /* libGLEW.2.0.0.dylib */,
+				550832211D8CD1E600AC374B /* libglfw3.3.2.dylib */,
+				5508320B1D8CBEA300AC374B /* CoreVideo.framework */,
+				550832091D8CBE9E00AC374B /* IOKit.framework */,
+				550832071D8CBE8F00AC374B /* Cocoa.framework */,
+				550832051D8CBD0000AC374B /* GLUT.framework */,
+				550832031D8CBCF900AC374B /* OpenGL.framework */,
 				550831FB1D8CBBB200AC374B /* GUIGame */,
 				550831FA1D8CBBB200AC374B /* Products */,
 			);
@@ -209,6 +237,13 @@
 		550832011D8CBBB200AC374B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = /Library/Frameworks;
+				HEADER_SEARCH_PATHS = /usr/local/include;
+				LIBRARY_SEARCH_PATHS = (
+					/usr/local/lib,
+					/usr/local/Cellar/glfw3/3.2.1/lib,
+				);
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -216,6 +251,13 @@
 		550832021D8CBBB200AC374B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = /Library/Frameworks;
+				HEADER_SEARCH_PATHS = /usr/local/include;
+				LIBRARY_SEARCH_PATHS = (
+					/usr/local/lib,
+					/usr/local/Cellar/glfw3/3.2.1/lib,
+				);
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
