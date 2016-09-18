@@ -12,18 +12,124 @@
 #include "MPErrors.hpp"
 #include <SFML/Audio.hpp>
 #include <fstream>
+#include "RandomGenerators.hpp"
+#include "Deck.hpp"
+
+// Blackjack random number generator for values (0 - 51)
+boost::mt19937 gen;
 
 
-const int firstCardInDeck = 0;
-const int secondCardInDeck = 1;
-//brew install tgui
-//Under “Linking” in “Other Linker Flags”, add “-ltgui” or “-ltgui-d”.
+
+sf::Sprite* getFirstCardSprite(const Deck& blackJackDeck, std::vector<sf::Sprite>& spriteVector, int index)
+{
+    sf::Sprite* cardSprite = new sf::Sprite;
+    switch (blackJackDeck._deck.at(index)._suit)
+    {
+        case::SUITS::SUIT_CLUB:
+        {
+            switch (blackJackDeck._deck.at(index)._rank)
+            {
+                case RANKS::RANK_ACE: cardSprite = &spriteVector.at(0); break;
+                case RANKS::RANK_TWO: cardSprite = &spriteVector.at(1); break;
+                case RANKS::RANK_THREE: cardSprite = &spriteVector.at(2); break;
+                case RANKS::RANK_FOUR: cardSprite = &spriteVector.at(3); break;
+                case RANKS::RANK_FIVE: cardSprite = &spriteVector.at(4); break;
+                case RANKS::RANK_SIX: cardSprite = &spriteVector.at(5); break;
+                case RANKS::RANK_SEVEN: cardSprite = &spriteVector.at(6); break;
+                case RANKS::RANK_EIGHT: cardSprite = &spriteVector.at(7); break;
+                case RANKS::RANK_NINE: cardSprite = &spriteVector.at(8); break;
+                case RANKS::RANK_TEN: cardSprite = &spriteVector.at(9); break;
+                case RANKS::RANK_JACK: cardSprite = &spriteVector.at(10); break;
+                case RANKS::RANK_QUEEN: cardSprite = &spriteVector.at(11); break;
+                case RANKS::RANK_KING: cardSprite = &spriteVector.at(12); break;
+            }
+        }
+        case::SUITS::SUIT_SPADE:
+        {
+            switch (blackJackDeck._deck.at(index)._rank)
+            {
+                case RANKS::RANK_ACE: cardSprite = &spriteVector.at(13); break;
+                case RANKS::RANK_TWO: cardSprite = &spriteVector.at(14); break;
+                case RANKS::RANK_THREE: cardSprite = &spriteVector.at(15); break;
+                case RANKS::RANK_FOUR: cardSprite = &spriteVector.at(16); break;
+                case RANKS::RANK_FIVE: cardSprite = &spriteVector.at(17); break;
+                case RANKS::RANK_SIX: cardSprite = &spriteVector.at(18); break;
+                case RANKS::RANK_SEVEN: cardSprite = &spriteVector.at(19); break;
+                case RANKS::RANK_EIGHT: cardSprite = &spriteVector.at(20); break;
+                case RANKS::RANK_NINE: cardSprite = &spriteVector.at(21); break;
+                case RANKS::RANK_TEN: cardSprite = &spriteVector.at(22); break;
+                case RANKS::RANK_JACK: cardSprite = &spriteVector.at(23); break;
+                case RANKS::RANK_QUEEN: cardSprite = &spriteVector.at(24); break;
+                case RANKS::RANK_KING: cardSprite = &spriteVector.at(25); break;
+            }
+        }
+        case SUITS::SUIT_HEART:
+        {
+            switch (blackJackDeck._deck.at(index)._rank)
+            {
+                case RANKS::RANK_ACE: cardSprite = &spriteVector.at(26); break;
+                case RANKS::RANK_TWO: cardSprite = &spriteVector.at(27); break;
+                case RANKS::RANK_THREE: cardSprite = &spriteVector.at(28); break;
+                case RANKS::RANK_FOUR: cardSprite = &spriteVector.at(29); break;
+                case RANKS::RANK_FIVE: cardSprite = &spriteVector.at(30); break;
+                case RANKS::RANK_SIX: cardSprite = &spriteVector.at(31); break;
+                case RANKS::RANK_SEVEN: cardSprite = &spriteVector.at(32); break;
+                case RANKS::RANK_EIGHT: cardSprite = &spriteVector.at(33); break;
+                case RANKS::RANK_NINE: cardSprite = &spriteVector.at(34); break;
+                case RANKS::RANK_TEN: cardSprite = &spriteVector.at(35); break;
+                case RANKS::RANK_JACK: cardSprite = &spriteVector.at(36); break;
+                case RANKS::RANK_QUEEN: cardSprite = &spriteVector.at(37); break;
+                case RANKS::RANK_KING: cardSprite = &spriteVector.at(38); break;
+            }
+        }
+        case SUITS::SUIT_DIAMOND:
+        {
+            switch (blackJackDeck._deck.at(index)._rank)
+            {
+                case RANKS::RANK_ACE: cardSprite = &spriteVector.at(39); break;
+                case RANKS::RANK_TWO: cardSprite = &spriteVector.at(40); break;
+                case RANKS::RANK_THREE: cardSprite = &spriteVector.at(41); break;
+                case RANKS::RANK_FOUR: cardSprite = &spriteVector.at(42); break;
+                case RANKS::RANK_FIVE: cardSprite = &spriteVector.at(43); break;
+                case RANKS::RANK_SIX: cardSprite = &spriteVector.at(44); break;
+                case RANKS::RANK_SEVEN: cardSprite = &spriteVector.at(45); break;
+                case RANKS::RANK_EIGHT: cardSprite = &spriteVector.at(46); break;
+                case RANKS::RANK_NINE: cardSprite = &spriteVector.at(47); break;
+                case RANKS::RANK_TEN: cardSprite = &spriteVector.at(48); break;
+                case RANKS::RANK_JACK: cardSprite = &spriteVector.at(49); break;
+                case RANKS::RANK_QUEEN: cardSprite = &spriteVector.at(50); break;
+                case RANKS::RANK_KING: cardSprite = &spriteVector.at(51); break;
+            }
+        }
+    }
+    cardSprite->scale(0.2, 0.2);
+    return cardSprite;
+}
+
+void printDeck(Deck& deck)
+{
+    for (int i = 0; i < 52; ++i)
+    {
+        std::cout << deck._deck.at(i)._rank << deck._deck.at(i)._suit << std::endl;
+    }
+}
+
 // The default position of a transformable object is (0, 0).
 // The default rotation of a transformable object is 0.
 // The default scale of a transformable object is (1, 1).
 // for now, forget money and set the starting chips to 300
 int main()
 {
+    Deck blackJackDeck;
+    blackJackDeck.shuffleDeck();
+    printDeck(blackJackDeck);
+    std::cout << std::endl;
+    blackJackDeck.shuffleDeck();
+    printDeck(blackJackDeck);
+    
+    // seed the random number generator for the blackjack deck shuffle.
+    gen.seed(static_cast<unsigned int>(std::time(0)));
+    
     sf::RenderWindow window(sf::VideoMode(800, 600), "SFML window");
     
     // get the size of the window, might use these later.
@@ -33,7 +139,7 @@ int main()
     
     // call it once, after creating the window
     window.setVerticalSyncEnabled(true);
-
+    
     
     // try to get the vector of cards working
     int textlinescounter = 0;
@@ -58,7 +164,7 @@ int main()
     {
         textureVector.push_back(textureName);
         spriteVector.push_back(spriteName);
-        fileNameVector.push_back(fileNameVector[i]);
+//        fileNameVector.push_back(fileNameVector[i]);
     }
     
     for(int i=0; i < textlinescounter; i++)
@@ -67,26 +173,27 @@ int main()
         (spriteVector[i]).setTexture(textureVector[i]);
     }
     
-    // Loop to make all the cards smaller.
-    for (auto it = spriteVector.begin(); it != spriteVector.end(); ++it)
-    {
-        (*it).scale(0.14, 0.14);
-    }
-    //rescale the player and dealer cards.
-    spriteVector.at(0).scale(1.5, 1.5);
-    spriteVector.at(1).scale(1.5, 1.5);
-    spriteVector.at(2).scale(1.5, 1.5);
-    spriteVector.at(3).scale(1.5, 1.5);
-    spriteVector.at(1).move(160, 0);
-    spriteVector.at(2).move(480, 0);
-    spriteVector.at(3).move(640, 0);
+//    // Loop to make all the cards smaller.
+//    for (auto it = spriteVector.begin(); it != spriteVector.end(); ++it)
+//    {
+//        (*it).scale(0.14, 0.14);
+//    }
     
-    // Potential hit cards.
-    spriteVector.at(4).move(150, 250);
-    spriteVector.at(5).move(250, 250);
-    spriteVector.at(6).move(350, 250);
-    spriteVector.at(7).move(450, 250);
-    spriteVector.at(8).move(550, 250);
+//    //rescale the player and dealer cards.
+//    spriteVector.at(0).scale(1.5, 1.5);
+//    spriteVector.at(1).scale(1.5, 1.5);
+//    spriteVector.at(2).scale(1.5, 1.5);
+//    spriteVector.at(3).scale(1.5, 1.5);
+//    spriteVector.at(1).move(160, 0);
+//    spriteVector.at(2).move(480, 0);
+//    spriteVector.at(3).move(640, 0);
+//
+//    // Potential hit cards.
+//    spriteVector.at(4).move(150, 250);
+//    spriteVector.at(5).move(250, 250);
+//    spriteVector.at(6).move(350, 250);
+//    spriteVector.at(7).move(450, 250);
+//    spriteVector.at(8).move(550, 250);
     
     
     // Prepare Player chips
@@ -122,25 +229,7 @@ int main()
     purpleChip.move(680, 490);
     
     
-    // Prepare Cards
-    sf::Texture texture1;
-    if (!texture1.loadFromFile("/Users/maxdietz/Desktop/GUIGame/GUIGame/Cards/c02.png"))
-        error("unable to load two of clubs card from file");
-    sf::Texture texture2;
-    if (!texture2.loadFromFile("/Users/maxdietz/Desktop/GUIGame/GUIGame/Cards/c03.png"))
-        error("unable to load three of clubs card from file");
-    std::vector<sf::Texture> textures;
-    
-    // code to display two and three of clubs with one next to the other in top left
-    sf::Sprite two_of_clubs;
-    sf::Sprite three_of_clubs;
-    two_of_clubs.setTexture(texture1);
-    three_of_clubs.setTexture(texture2);
-    two_of_clubs.move(150, 0);
-    two_of_clubs.scale(0.2, 0.2);
-    three_of_clubs.scale(0.2,0.2);
-    
-    
+
     // User this later
     // sf::FloatRect boundingBox = two_of_clubs.getGlobalBounds();
     
@@ -153,7 +242,7 @@ int main()
     music.setLoop(true);
     music.setVolume(70);
     music.play();
-
+    
     
     // create and prepare texts for displaying basic welcome messages on the first page.
     sf::Font font;
@@ -212,6 +301,9 @@ int main()
     bool hasStartingChips = true; // need better idea for this chip tracking later.
 
 
+    sf::Sprite* firstCard = getFirstCardSprite(blackJackDeck, spriteVector, 0);
+    sf::Sprite* secondCard = getFirstCardSprite(blackJackDeck, spriteVector, 1);
+    secondCard->move(160, 0);
     
     // Program loop
     while(window.isOpen())
@@ -259,10 +351,11 @@ int main()
         // Clear the whole window before rendering a new frame
         window.clear();
         
-        for (auto it = spriteVector.begin(); it != spriteVector.end(); ++it)
-        {
-            window.draw(*it);
-        }
+        // Test code for checking card display.
+//        for (auto it = spriteVector.begin(); it != spriteVector.end(); ++it)
+//        {
+//            window.draw(*it);
+//        }
 
         
         // Welcome screen is drawn first.
@@ -304,35 +397,17 @@ int main()
         if (isBetSubmitted == true)
         {
             /*
-             
              // add a card drawing noise here to play quickly for 2 cards.
-             
              */
             
-            window.draw(sprites[firstCardInDeck]);
-            window.draw(sprites[secondCardInDeck]);
-        }
+            window.draw(*firstCard);
+            window.draw(*secondCard);
+            
 
+        }
+                          
         // End the current frame and display its contents on screen.
         window.display();
     }
-    
 }
 
-
-/* Code to get and set mouse position if I need it.
- 
- 
- // Get mouse position stuff
- // get the global mouse position (relative to the desktop)
- sf::Vector2i globalPosition = sf::Mouse::getPosition();
- // get the local mouse position (relative to a window)
-//  sf::Vector2i localPosition = sf::Mouse::getPosition(window); // window is a sf::Window
- 
- // Set mouse position stuff
- // set the mouse position globally (relative to the desktop)
- sf::Mouse::setPosition(sf::Vector2i(10, 50));
- // set the mouse position locally (relative to a window)
- sf::Mouse::setPosition(sf::Vector2i(10, 50), window); // window is a sf::Window
- 
- */

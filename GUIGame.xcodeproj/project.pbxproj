@@ -24,6 +24,9 @@
 		550832411D8DE9BB00AC374B /* libsfml-window.2.4.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 550832321D8DE9BB00AC374B /* libsfml-window.2.4.0.dylib */; };
 		550832421D8DE9BB00AC374B /* libsfml-window.2.4.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 550832331D8DE9BB00AC374B /* libsfml-window.2.4.0.dylib */; };
 		550832451D8DEDC500AC374B /* MPErrors.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 550832431D8DEDC500AC374B /* MPErrors.cpp */; };
+		550832481D8E6A8E00AC374B /* Card.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 550832461D8E6A8E00AC374B /* Card.cpp */; };
+		5508324B1D8E6C8600AC374B /* Deck.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 550832491D8E6C8600AC374B /* Deck.cpp */; };
+		5508324E1D8E730400AC374B /* RandomGenerators.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5508324C1D8E730400AC374B /* RandomGenerators.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -58,6 +61,12 @@
 		550832331D8DE9BB00AC374B /* libsfml-window.2.4.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libsfml-window.2.4.0.dylib"; path = "../../../../usr/local/lib/libsfml-window.2.4.0.dylib"; sourceTree = "<group>"; };
 		550832431D8DEDC500AC374B /* MPErrors.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MPErrors.cpp; path = ../../BlackJack/MPErrors.cpp; sourceTree = "<group>"; };
 		550832441D8DEDC500AC374B /* MPErrors.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = MPErrors.hpp; path = ../../BlackJack/MPErrors.hpp; sourceTree = "<group>"; };
+		550832461D8E6A8E00AC374B /* Card.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Card.cpp; sourceTree = "<group>"; };
+		550832471D8E6A8E00AC374B /* Card.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Card.hpp; sourceTree = "<group>"; };
+		550832491D8E6C8600AC374B /* Deck.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Deck.cpp; sourceTree = "<group>"; };
+		5508324A1D8E6C8600AC374B /* Deck.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Deck.hpp; sourceTree = "<group>"; };
+		5508324C1D8E730400AC374B /* RandomGenerators.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RandomGenerators.cpp; path = ../../BlackJack/BlackJack/RandomGenerators.cpp; sourceTree = "<group>"; };
+		5508324D1D8E730400AC374B /* RandomGenerators.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = RandomGenerators.hpp; path = ../../BlackJack/BlackJack/RandomGenerators.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,9 +129,15 @@
 		550831FB1D8CBBB200AC374B /* GUIGame */ = {
 			isa = PBXGroup;
 			children = (
+				5508324C1D8E730400AC374B /* RandomGenerators.cpp */,
+				5508324D1D8E730400AC374B /* RandomGenerators.hpp */,
 				550831FC1D8CBBB200AC374B /* main.cpp */,
 				550832431D8DEDC500AC374B /* MPErrors.cpp */,
 				550832441D8DEDC500AC374B /* MPErrors.hpp */,
+				550832461D8E6A8E00AC374B /* Card.cpp */,
+				550832471D8E6A8E00AC374B /* Card.hpp */,
+				550832491D8E6C8600AC374B /* Deck.cpp */,
+				5508324A1D8E6C8600AC374B /* Deck.hpp */,
 			);
 			path = GUIGame;
 			sourceTree = "<group>";
@@ -183,6 +198,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5508324E1D8E730400AC374B /* RandomGenerators.cpp in Sources */,
+				5508324B1D8E6C8600AC374B /* Deck.cpp in Sources */,
+				550832481D8E6A8E00AC374B /* Card.cpp in Sources */,
 				550831FD1D8CBBB200AC374B /* main.cpp in Sources */,
 				550832451D8DEDC500AC374B /* MPErrors.cpp in Sources */,
 			);
