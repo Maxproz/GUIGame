@@ -48,7 +48,6 @@ public:
 
 // Helper functions for cards.
 void swapCard(Card& card1, Card& card2);
-std::ostream& operator<<(std::ostream& os, const RANKS& r);
-std::ostream& operator<<(std::ostream& os, const SUITS& s);
+std::ostream& operator<<(std::ostream& os, const Card& r);
 
 #endif /* Card_hpp */

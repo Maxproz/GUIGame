@@ -23,83 +23,85 @@ boost::mt19937 gen;
 sf::Sprite* getFirstCardSprite(const Deck& blackJackDeck, std::vector<sf::Sprite>& spriteVector, int index)
 {
     sf::Sprite* cardSprite = new sf::Sprite;
-    switch (blackJackDeck._deck.at(index)._suit)
+    
+    if (blackJackDeck._deck.at(index)._suit == SUITS::SUIT_CLUB)
     {
-        case::SUITS::SUIT_CLUB:
+        switch (blackJackDeck._deck.at(index)._rank)
         {
-            switch (blackJackDeck._deck.at(index)._rank)
-            {
-                case RANKS::RANK_ACE: cardSprite = &spriteVector.at(0); break;
-                case RANKS::RANK_TWO: cardSprite = &spriteVector.at(1); break;
-                case RANKS::RANK_THREE: cardSprite = &spriteVector.at(2); break;
-                case RANKS::RANK_FOUR: cardSprite = &spriteVector.at(3); break;
-                case RANKS::RANK_FIVE: cardSprite = &spriteVector.at(4); break;
-                case RANKS::RANK_SIX: cardSprite = &spriteVector.at(5); break;
-                case RANKS::RANK_SEVEN: cardSprite = &spriteVector.at(6); break;
-                case RANKS::RANK_EIGHT: cardSprite = &spriteVector.at(7); break;
-                case RANKS::RANK_NINE: cardSprite = &spriteVector.at(8); break;
-                case RANKS::RANK_TEN: cardSprite = &spriteVector.at(9); break;
-                case RANKS::RANK_JACK: cardSprite = &spriteVector.at(10); break;
-                case RANKS::RANK_QUEEN: cardSprite = &spriteVector.at(11); break;
-                case RANKS::RANK_KING: cardSprite = &spriteVector.at(12); break;
-            }
+            case RANKS::RANK_ACE: cardSprite = &spriteVector.at(0); break;
+            case RANKS::RANK_TWO: cardSprite = &spriteVector.at(1); break;
+            case RANKS::RANK_THREE: cardSprite = &spriteVector.at(2); break;
+            case RANKS::RANK_FOUR: cardSprite = &spriteVector.at(3); break;
+            case RANKS::RANK_FIVE: cardSprite = &spriteVector.at(4); break;
+            case RANKS::RANK_SIX: cardSprite = &spriteVector.at(5); break;
+            case RANKS::RANK_SEVEN: cardSprite = &spriteVector.at(6); break;
+            case RANKS::RANK_EIGHT: cardSprite = &spriteVector.at(7); break;
+            case RANKS::RANK_NINE: cardSprite = &spriteVector.at(8); break;
+            case RANKS::RANK_TEN: cardSprite = &spriteVector.at(9); break;
+            case RANKS::RANK_JACK: cardSprite = &spriteVector.at(10); break;
+            case RANKS::RANK_QUEEN: cardSprite = &spriteVector.at(11); break;
+            case RANKS::RANK_KING: cardSprite = &spriteVector.at(12); break;
         }
-        case::SUITS::SUIT_SPADE:
+    }
+    
+    if (blackJackDeck._deck.at(index)._suit == SUITS::SUIT_SPADE)
+    {
+        switch (blackJackDeck._deck.at(index)._rank)
         {
-            switch (blackJackDeck._deck.at(index)._rank)
-            {
-                case RANKS::RANK_ACE: cardSprite = &spriteVector.at(13); break;
-                case RANKS::RANK_TWO: cardSprite = &spriteVector.at(14); break;
-                case RANKS::RANK_THREE: cardSprite = &spriteVector.at(15); break;
-                case RANKS::RANK_FOUR: cardSprite = &spriteVector.at(16); break;
-                case RANKS::RANK_FIVE: cardSprite = &spriteVector.at(17); break;
-                case RANKS::RANK_SIX: cardSprite = &spriteVector.at(18); break;
-                case RANKS::RANK_SEVEN: cardSprite = &spriteVector.at(19); break;
-                case RANKS::RANK_EIGHT: cardSprite = &spriteVector.at(20); break;
-                case RANKS::RANK_NINE: cardSprite = &spriteVector.at(21); break;
-                case RANKS::RANK_TEN: cardSprite = &spriteVector.at(22); break;
-                case RANKS::RANK_JACK: cardSprite = &spriteVector.at(23); break;
-                case RANKS::RANK_QUEEN: cardSprite = &spriteVector.at(24); break;
-                case RANKS::RANK_KING: cardSprite = &spriteVector.at(25); break;
-            }
+            case RANKS::RANK_ACE: cardSprite = &spriteVector.at(13); break;
+            case RANKS::RANK_TWO: cardSprite = &spriteVector.at(14); break;
+            case RANKS::RANK_THREE: cardSprite = &spriteVector.at(15); break;
+            case RANKS::RANK_FOUR: cardSprite = &spriteVector.at(16); break;
+            case RANKS::RANK_FIVE: cardSprite = &spriteVector.at(17); break;
+            case RANKS::RANK_SIX: cardSprite = &spriteVector.at(18); break;
+            case RANKS::RANK_SEVEN: cardSprite = &spriteVector.at(19); break;
+            case RANKS::RANK_EIGHT: cardSprite = &spriteVector.at(20); break;
+            case RANKS::RANK_NINE: cardSprite = &spriteVector.at(21); break;
+            case RANKS::RANK_TEN: cardSprite = &spriteVector.at(22); break;
+            case RANKS::RANK_JACK: cardSprite = &spriteVector.at(23); break;
+            case RANKS::RANK_QUEEN: cardSprite = &spriteVector.at(24); break;
+            case RANKS::RANK_KING: cardSprite = &spriteVector.at(25); break;
         }
-        case SUITS::SUIT_HEART:
+    }
+
+
+    if (blackJackDeck._deck.at(index)._suit == SUITS::SUIT_HEART)
+    {
+        switch (blackJackDeck._deck.at(index)._rank)
         {
-            switch (blackJackDeck._deck.at(index)._rank)
-            {
-                case RANKS::RANK_ACE: cardSprite = &spriteVector.at(26); break;
-                case RANKS::RANK_TWO: cardSprite = &spriteVector.at(27); break;
-                case RANKS::RANK_THREE: cardSprite = &spriteVector.at(28); break;
-                case RANKS::RANK_FOUR: cardSprite = &spriteVector.at(29); break;
-                case RANKS::RANK_FIVE: cardSprite = &spriteVector.at(30); break;
-                case RANKS::RANK_SIX: cardSprite = &spriteVector.at(31); break;
-                case RANKS::RANK_SEVEN: cardSprite = &spriteVector.at(32); break;
-                case RANKS::RANK_EIGHT: cardSprite = &spriteVector.at(33); break;
-                case RANKS::RANK_NINE: cardSprite = &spriteVector.at(34); break;
-                case RANKS::RANK_TEN: cardSprite = &spriteVector.at(35); break;
-                case RANKS::RANK_JACK: cardSprite = &spriteVector.at(36); break;
-                case RANKS::RANK_QUEEN: cardSprite = &spriteVector.at(37); break;
-                case RANKS::RANK_KING: cardSprite = &spriteVector.at(38); break;
-            }
+            case RANKS::RANK_ACE: cardSprite = &spriteVector.at(26); break;
+            case RANKS::RANK_TWO: cardSprite = &spriteVector.at(27); break;
+            case RANKS::RANK_THREE: cardSprite = &spriteVector.at(28); break;
+            case RANKS::RANK_FOUR: cardSprite = &spriteVector.at(29); break;
+            case RANKS::RANK_FIVE: cardSprite = &spriteVector.at(30); break;
+            case RANKS::RANK_SIX: cardSprite = &spriteVector.at(31); break;
+            case RANKS::RANK_SEVEN: cardSprite = &spriteVector.at(32); break;
+            case RANKS::RANK_EIGHT: cardSprite = &spriteVector.at(33); break;
+            case RANKS::RANK_NINE: cardSprite = &spriteVector.at(34); break;
+            case RANKS::RANK_TEN: cardSprite = &spriteVector.at(35); break;
+            case RANKS::RANK_JACK: cardSprite = &spriteVector.at(36); break;
+            case RANKS::RANK_QUEEN: cardSprite = &spriteVector.at(37); break;
+            case RANKS::RANK_KING: cardSprite = &spriteVector.at(38); break;
         }
-        case SUITS::SUIT_DIAMOND:
+    }
+        
+    if (blackJackDeck._deck.at(index)._suit == SUITS::SUIT_DIAMOND)
+    {
+        switch (blackJackDeck._deck.at(index)._rank)
         {
-            switch (blackJackDeck._deck.at(index)._rank)
-            {
-                case RANKS::RANK_ACE: cardSprite = &spriteVector.at(39); break;
-                case RANKS::RANK_TWO: cardSprite = &spriteVector.at(40); break;
-                case RANKS::RANK_THREE: cardSprite = &spriteVector.at(41); break;
-                case RANKS::RANK_FOUR: cardSprite = &spriteVector.at(42); break;
-                case RANKS::RANK_FIVE: cardSprite = &spriteVector.at(43); break;
-                case RANKS::RANK_SIX: cardSprite = &spriteVector.at(44); break;
-                case RANKS::RANK_SEVEN: cardSprite = &spriteVector.at(45); break;
-                case RANKS::RANK_EIGHT: cardSprite = &spriteVector.at(46); break;
-                case RANKS::RANK_NINE: cardSprite = &spriteVector.at(47); break;
-                case RANKS::RANK_TEN: cardSprite = &spriteVector.at(48); break;
-                case RANKS::RANK_JACK: cardSprite = &spriteVector.at(49); break;
-                case RANKS::RANK_QUEEN: cardSprite = &spriteVector.at(50); break;
-                case RANKS::RANK_KING: cardSprite = &spriteVector.at(51); break;
-            }
+            case RANKS::RANK_ACE: cardSprite = &spriteVector.at(39); break;
+            case RANKS::RANK_TWO: cardSprite = &spriteVector.at(40); break;
+            case RANKS::RANK_THREE: cardSprite = &spriteVector.at(41); break;
+            case RANKS::RANK_FOUR: cardSprite = &spriteVector.at(42); break;
+            case RANKS::RANK_FIVE: cardSprite = &spriteVector.at(43); break;
+            case RANKS::RANK_SIX: cardSprite = &spriteVector.at(44); break;
+            case RANKS::RANK_SEVEN: cardSprite = &spriteVector.at(45); break;
+            case RANKS::RANK_EIGHT: cardSprite = &spriteVector.at(46); break;
+            case RANKS::RANK_NINE: cardSprite = &spriteVector.at(47); break;
+            case RANKS::RANK_TEN: cardSprite = &spriteVector.at(48); break;
+            case RANKS::RANK_JACK: cardSprite = &spriteVector.at(49); break;
+            case RANKS::RANK_QUEEN: cardSprite = &spriteVector.at(50); break;
+            case RANKS::RANK_KING: cardSprite = &spriteVector.at(51); break;
         }
     }
     cardSprite->scale(0.2, 0.2);
@@ -110,7 +112,7 @@ void printDeck(Deck& deck)
 {
     for (int i = 0; i < 52; ++i)
     {
-        std::cout << deck._deck.at(i)._rank << deck._deck.at(i)._suit << std::endl;
+        std::cout << deck._deck[i] << std::endl;
     }
 }
 
@@ -121,9 +123,7 @@ void printDeck(Deck& deck)
 int main()
 {
     Deck blackJackDeck;
-    blackJackDeck.shuffleDeck();
-    printDeck(blackJackDeck);
-    std::cout << std::endl;
+    blackJackDeck.fillDeckWithCards();
     blackJackDeck.shuffleDeck();
     printDeck(blackJackDeck);
     
@@ -164,7 +164,7 @@ int main()
     {
         textureVector.push_back(textureName);
         spriteVector.push_back(spriteName);
-//        fileNameVector.push_back(fileNameVector[i]);
+        fileNameVector.push_back(fileNameVector[i]);
     }
     
     for(int i=0; i < textlinescounter; i++)
@@ -229,7 +229,6 @@ int main()
     purpleChip.move(680, 490);
     
     
-
     // User this later
     // sf::FloatRect boundingBox = two_of_clubs.getGlobalBounds();
     
@@ -403,11 +402,11 @@ int main()
             window.draw(*firstCard);
             window.draw(*secondCard);
             
-
         }
                           
         // End the current frame and display its contents on screen.
         window.display();
     }
+
 }
 

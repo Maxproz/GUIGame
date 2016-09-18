@@ -17,10 +17,10 @@ void swapCard(Card& card1, Card& card2)
     card2 = tmp;
 }
 
-std::ostream& operator<<(std::ostream& os, const RANKS& r)
+std::ostream& operator<<(std::ostream& os, const Card& r)
 {
     using namespace std;
-    switch (r)
+    switch (r._rank)
     {
         case RANKS::RANK_TWO:    os << "2";  break;
         case RANKS::RANK_THREE:  os << "3";  break;
@@ -38,12 +38,8 @@ std::ostream& operator<<(std::ostream& os, const RANKS& r)
         default:
             error("Unable to process Rank of card");
     }
-    return os;
-}
-
-std::ostream& operator<<(std::ostream& os, const SUITS& s)
-{
-    switch (s)
+    
+    switch (r._suit)
     {
         case SUITS::SUIT_SPADE:     os << "S"; break;
         case SUITS::SUIT_CLUB:      os << "C"; break;
@@ -52,5 +48,7 @@ std::ostream& operator<<(std::ostream& os, const SUITS& s)
         default:
             error("Unable to process Suit of card");
     }
+    
+    
     return os;
 }
