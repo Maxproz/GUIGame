@@ -10,48 +10,17 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include "MPErrors.hpp"
-//#include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Audio.hpp>
 
 
 
 const int firstCardInDeck = 0;
 const int secondCardInDeck = 1;
-
-class UIButton : public sf::Transformable, public sf::Drawable
-{
-public:
-    sf::RectangleShape _rectangle;
-    sf::Text _text;
-
-    UIButton()
-    {
-        _rectangle.setSize(sf::Vector2f(120, 50));
-        _rectangle.setFillColor(sf::Color::Black);
-        
-        sf::Font tempFont;
-        if (!tempFont.loadFromFile("/Users/maxdietz/Desktop/GUIGame/GUIGame/Fonts/Kyoto.ttf"))
-            error("Unable to load font from file");
-        _text.setFont(tempFont);
-        _text.setString("Temp");
-        _text.setCharacterSize(24);
-        _text.setFillColor(sf::Color::Red);
-    }
-    
-    bool isClicked()
-    {
-        return _isClicked;
-    }
-    
-    void setClickedTrue() { _isClicked = true; }
-    void setClickedFalse() { _isClicked = false; }
-    
-private:
-    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
-    bool _isClicked = false;
-};
-
-
+//brew install tgui
+//Under “Linking” in “Other Linker Flags”, add “-ltgui” or “-ltgui-d”.
+// The default position of a transformable object is (0, 0).
+// The default rotation of a transformable object is 0.
+// The default scale of a transformable object is (1, 1).
 // for now, forget money and set the starting chips to 300
 int main()
 {
@@ -102,13 +71,13 @@ int main()
     // Prepare Cards
     sf::Texture texture1;
     if (!texture1.loadFromFile("/Users/maxdietz/Desktop/GUIGame/GUIGame/Cards/c02.png"))
-        error("unable to load first card from file");
+        error("unable to load two of clubs card from file");
     sf::Texture texture2;
     if (!texture2.loadFromFile("/Users/maxdietz/Desktop/GUIGame/GUIGame/Cards/c03.png"))
-        error("unable to load first card from file");
+        error("unable to load three of clubs card from file");
     
     
-    // code to load first 2 cards with one off to the right
+    // code to display two and three of clubs with one next to the other in top left
     sf::Sprite two_of_clubs;
     sf::Sprite three_of_clubs;
     two_of_clubs.setTexture(texture1);
@@ -117,7 +86,7 @@ int main()
     two_of_clubs.scale(0.2, 0.2);
     three_of_clubs.scale(0.2,0.2);
     
-    
+    // User this later
     sf::FloatRect boundingBox = two_of_clubs.getGlobalBounds();
     
     std::vector<sf::Sprite> sprites;
@@ -136,15 +105,16 @@ int main()
     // Load a music to play
     sf::Music music;
     if (!music.openFromFile("/Users/maxdietz/Desktop/GUIGame/GUIGame/Sounds/loopmus.ogg"))
-        error("unable to load first card from file");
+        error("unable to load loop music from file");
     // Play the music
     music.setLoop(true);
-    music.play();
     music.setVolume(70);
+    music.play();
+
     
     
     
-    // create and prepare texts for displaying.
+    // create and prepare texts for displaying basic welcome messages on the first page.
     sf::Font font;
     if (!font.loadFromFile("/Users/maxdietz/Desktop/GUIGame/GUIGame/Fonts/Kyoto.ttf"))
         error("Unable to load font from file");
@@ -157,18 +127,57 @@ int main()
     betDisplay2.move(0, 130);
     beginMessage.move(0, 300);
     
-    
-    bool hasStartingChips = true; // need better idea for this chip tracking later.
-    bool hasPlayerMadeABet = false;
 
-    
     // Try to setup the Buttons for Hit/Stay
-    UIButton hitButton;
+    sf::Texture texture3;
+    if (!texture3.loadFromFile("/Users/maxdietz/Desktop/GUIGame/GUIGame/Buttons/Stay.png"))
+        error("unable to load Stay Button from file");
+    sf::Sprite stayButton;
+    stayButton.scale(0.4, 0.5);
+    stayButton.setTexture(texture3);
+    stayButton.move(50, 490);
+    sf::Text stayButtonText("STAY", font, 80);
+    stayButtonText.setPosition(stayButton.getPosition());
     
+    sf::Texture texture4;
+    if (!texture4.loadFromFile("/Users/maxdietz/Desktop/GUIGame/GUIGame/Buttons/Hit.png"))
+        error("unable to load Hit Button from file");
+    sf::Sprite hitButton;
+    hitButton.scale(0.4, 0.5);
+    hitButton.setTexture(texture4);
+    hitButton.move(250, 490);
+    sf::Text hitButtonText("HIT", font, 80);
+    hitButtonText.setPosition(hitButton.getPosition());
+    hitButtonText.move(20, 0);
+    
+    
+    // Setup a Submit Bet Button
+    sf::Texture texture5;
+    if (!texture5.loadFromFile("/Users/maxdietz/Desktop/GUIGame/GUIGame/Buttons/Submit.png"))
+        error("Unable to load Submit Bet Button");
+    sf::Sprite submitBetButton;
+    submitBetButton.scale(1.0, 0.5);
+    submitBetButton.setTexture(texture5);
+    submitBetButton.move(20, 490);
+    sf::Text submitBetButtonText("SUBMIT BET", font, 75);
+    submitBetButtonText.setPosition(submitBetButton.getPosition());
+    submitBetButtonText.move(15, 5);
+    submitBetButtonText.setFillColor(sf::Color::Blue);
+    
+    
+    // big scoped variables
+    bool isWelcomeScreen = true;
+    bool isBetSubmitted = false;
+    bool hasStartingChips = true; // need better idea for this chip tracking later.
+
+
     
     // Program loop
     while(window.isOpen())
     {
+        // variable to hold the temp mouse position on the current frame.
+        sf::Vector2f tempMouse(sf::Mouse::getPosition(window));
+        
         // check all the window's events that were triggered since the last iteration of the loop
         sf::Event event;
         while (window.pollEvent(event))
@@ -188,15 +197,16 @@ int main()
             {
                 // left key is pressed:
                 // increase the bet from Player class.
-                hasPlayerMadeABet = true;
+                isWelcomeScreen = false;
             }
             
             
-            sf::Vector2f tempMouse(sf::Mouse::getPosition(window));
-            if (two_of_clubs.getGlobalBounds().contains(tempMouse) &&
-                      event.type == sf::Event::MouseButtonReleased &&
-                      event.key.code == sf::Mouse::Left)
+            if (submitBetButton.getGlobalBounds().contains(tempMouse) &&
+                            event.type == sf::Event::MouseButtonReleased &&
+                            event.key.code == sf::Mouse::Left)
             {
+                
+                isBetSubmitted = true;
                /*
                 
                 Add code here to the chip sprites on screen, so when you click the bet goes up in intervals.
@@ -207,27 +217,46 @@ int main()
         
         // Clear the whole window before rendering a new frame
         window.clear();
+
         
-        // Try to draw UI Buttons
-        window.draw(hitButton);
-        
-        if (hasStartingChips == true && hasPlayerMadeABet == true)
+        // Welcome screen is drawn first.
+        if (isWelcomeScreen == true)
         {
-            window.draw(whiteChip);
-            window.draw(redChip);
-            window.draw(purpleChip);
-        }
-        
-        if (hasPlayerMadeABet == false)
-        {
+            // The inital load screen
             window.draw(welcomeMessage);
             window.draw(betDisplay1);
             window.draw(betDisplay2);
             window.draw(beginMessage);
         }
         
-        // Draw some graphical entities
-        if (hasPlayerMadeABet == true)
+        // Then the Submit bet button and chips appear until the player submits the bet.
+        // - after submitting the chips will stay on screen and the submit bet button will be
+        // replaced by the hit and stay buttons.
+        if (hasStartingChips == true && isWelcomeScreen == false)
+        {
+            if (isBetSubmitted == false)
+            {
+                window.draw(submitBetButton);
+                window.draw(submitBetButtonText);
+                window.draw(whiteChip);
+                window.draw(redChip);
+                window.draw(purpleChip);
+            }
+            else
+            {
+                // Replace the submit bet button with these
+                window.draw(stayButton);
+                window.draw(stayButtonText);
+                window.draw(hitButton);
+                window.draw(hitButtonText);
+                window.draw(whiteChip);
+                window.draw(redChip);
+                window.draw(purpleChip);
+            }
+
+        }
+        
+        if (isBetSubmitted == true)
         {
             /*
              
