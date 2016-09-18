@@ -21,10 +21,10 @@ public:
     std::vector<Card> _deck;
     
     // Fill the deck up with 52 cards.
-    Deck() = default;
+    Deck();
     
     void shuffleDeck();
-    void fillDeckWithCards();
+//    void fillDeckWithCards();
 };
 
 //std::vector<Card> fillDeckWithCards();

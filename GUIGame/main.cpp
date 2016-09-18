@@ -123,8 +123,8 @@ void printDeck(Deck& deck)
 int main()
 {
     Deck blackJackDeck;
-    blackJackDeck.fillDeckWithCards();
-    blackJackDeck.shuffleDeck();
+//    blackJackDeck.fillDeckWithCards();
+//    blackJackDeck.shuffleDeck();
     printDeck(blackJackDeck);
     
     // seed the random number generator for the blackjack deck shuffle.
