@@ -11,7 +11,7 @@
 #include <SFML/Window.hpp>
 #include "MPErrors.hpp"
 #include <SFML/Audio.hpp>
-
+#include <fstream>
 
 
 const int firstCardInDeck = 0;
@@ -34,6 +34,60 @@ int main()
     // call it once, after creating the window
     window.setVerticalSyncEnabled(true);
 
+    
+    // try to get the vector of cards working
+    int textlinescounter = 0;
+    sf::Texture textureName;
+    sf::Sprite spriteName;
+    std::string stringData;
+    
+    std::vector<sf::Texture> textureVector;
+    std::vector<sf::Sprite> spriteVector;
+    std::vector<std::string> fileNameVector;
+    
+    std::ifstream fileNameIfStream;
+    fileNameIfStream.open("/Users/maxdietz/Desktop/GUIGame/GUIGame/mydata.txt");
+    
+    while(fileNameIfStream >> stringData)
+    {
+        textlinescounter++;
+        fileNameVector.push_back(stringData);
+    }
+    
+    for(int i=0; i < textlinescounter; i++)
+    {
+        textureVector.push_back(textureName);
+        spriteVector.push_back(spriteName);
+        fileNameVector.push_back(fileNameVector[i]);
+    }
+    
+    for(int i=0; i < textlinescounter; i++)
+    {
+        (textureVector[i]).loadFromFile(fileNameVector[i]);
+        (spriteVector[i]).setTexture(textureVector[i]);
+    }
+    
+    // Loop to make all the cards smaller.
+    for (auto it = spriteVector.begin(); it != spriteVector.end(); ++it)
+    {
+        (*it).scale(0.14, 0.14);
+    }
+    //rescale the player and dealer cards.
+    spriteVector.at(0).scale(1.5, 1.5);
+    spriteVector.at(1).scale(1.5, 1.5);
+    spriteVector.at(2).scale(1.5, 1.5);
+    spriteVector.at(3).scale(1.5, 1.5);
+    spriteVector.at(1).move(160, 0);
+    spriteVector.at(2).move(480, 0);
+    spriteVector.at(3).move(640, 0);
+    
+    // Potential hit cards.
+    spriteVector.at(4).move(150, 250);
+    spriteVector.at(5).move(250, 250);
+    spriteVector.at(6).move(350, 250);
+    spriteVector.at(7).move(450, 250);
+    spriteVector.at(8).move(550, 250);
+    
     
     // Prepare Player chips
     // Players will get:
@@ -75,7 +129,7 @@ int main()
     sf::Texture texture2;
     if (!texture2.loadFromFile("/Users/maxdietz/Desktop/GUIGame/GUIGame/Cards/c03.png"))
         error("unable to load three of clubs card from file");
-    
+    std::vector<sf::Texture> textures;
     
     // code to display two and three of clubs with one next to the other in top left
     sf::Sprite two_of_clubs;
@@ -86,20 +140,9 @@ int main()
     two_of_clubs.scale(0.2, 0.2);
     three_of_clubs.scale(0.2,0.2);
     
+    
     // User this later
-    sf::FloatRect boundingBox = two_of_clubs.getGlobalBounds();
-    
-    std::vector<sf::Sprite> sprites;
-    sprites.push_back(two_of_clubs);
-    sprites.push_back(three_of_clubs);
-    
-    
-    // code could be useful for saving code space, would prevent the excess pushback, dunno if it actually work.
-//    std::vector<sf::Sprite> sprites = std::vector < sf::Sprite >
-//    {
-//        sf::Sprite(texture1), sf::Sprite(texture2),
-//    };
-    
+    // sf::FloatRect boundingBox = two_of_clubs.getGlobalBounds();
     
     // Create a sf::Music and put it to play for the program duration.
     // Load a music to play
@@ -111,8 +154,6 @@ int main()
     music.setVolume(70);
     music.play();
 
-    
-    
     
     // create and prepare texts for displaying basic welcome messages on the first page.
     sf::Font font;
@@ -217,6 +258,11 @@ int main()
         
         // Clear the whole window before rendering a new frame
         window.clear();
+        
+        for (auto it = spriteVector.begin(); it != spriteVector.end(); ++it)
+        {
+            window.draw(*it);
+        }
 
         
         // Welcome screen is drawn first.
@@ -253,7 +299,6 @@ int main()
                 window.draw(redChip);
                 window.draw(purpleChip);
             }
-
         }
         
         if (isBetSubmitted == true)
