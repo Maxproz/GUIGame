@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "C3472CEE195C2A115F3239E9EB0A0560611B724B",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "C3472CEE195C2A115F3239E9EB0A0560611B724B" : 0,
+    "BBAAD10BEA6339024AB4078233116AB44B459C01" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "07C17DD1-96E7-4F59-85FA-513344A573A0",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "C3472CEE195C2A115F3239E9EB0A0560611B724B" : "GUIGame\/",
+    "BBAAD10BEA6339024AB4078233116AB44B459C01" : "BlackJack\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "GUIGame",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "GUIGame.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/ProGameDesigns\/BlackJack.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "BBAAD10BEA6339024AB4078233116AB44B459C01"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/ProGameDesigns\/GUIGame.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "C3472CEE195C2A115F3239E9EB0A0560611B724B"
+    }
+  ]
+}

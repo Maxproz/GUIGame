@@ -1,0 +1,13 @@
+/Users/maxdietz/Desktop/GUIGame/GUIGame/Cards/c01.png
+/Users/maxdietz/Desktop/GUIGame/GUIGame/Cards/c02.png
+/Users/maxdietz/Desktop/GUIGame/GUIGame/Cards/c03.png
+/Users/maxdietz/Desktop/GUIGame/GUIGame/Cards/c04.png
+/Users/maxdietz/Desktop/GUIGame/GUIGame/Cards/c05.png
+/Users/maxdietz/Desktop/GUIGame/GUIGame/Cards/c06.png
+/Users/maxdietz/Desktop/GUIGame/GUIGame/Cards/c07.png
+/Users/maxdietz/Desktop/GUIGame/GUIGame/Cards/c08.png
+/Users/maxdietz/Desktop/GUIGame/GUIGame/Cards/c09.png
+/Users/maxdietz/Desktop/GUIGame/GUIGame/Cards/c10.png
+/Users/maxdietz/Desktop/GUIGame/GUIGame/Cards/c11.png
+/Users/maxdietz/Desktop/GUIGame/GUIGame/Cards/c12.png
+/Users/maxdietz/Desktop/GUIGame/GUIGame/Cards/c13.png

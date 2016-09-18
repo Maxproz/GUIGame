@@ -7,210 +7,176 @@
 //
 
 #include <iostream>
-
-#include <GL/glew.h>
-#include <glfw3.h>
-
-#ifdef __APPLE__
-#  include <GLUT/glut.h>
-#else
-#  include <GL/glut.h>
-#endif
+#include <SFML/Graphics.hpp>
+#include <SFML/Window.hpp>
+#include "MPErrors.hpp"
+#include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Audio.hpp>
+#include <fstream>
 
 
-//#version 330 
+const int firstCardInDeck = 0;
+const int secondCardInDeck = 1;
 
-//layout (location = 0) in vec3 position;
-
-void key_callback(GLFWwindow* window, int key, int scancode, int action , int mode);
-
-int main(int argc, const char* argv[])
+int main()
 {
-    glfwInit();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+    sf::RenderWindow window(sf::VideoMode(800, 600), "SFML window");
     
-//    GLFWwindow
-    GLFWwindow* window = glfwCreateWindow(800, 600, "BlackJack", nullptr, nullptr);
-    if (window == nullptr)
-    {
-        std::cout << "Failed to create GLFW window" << std::endl;
-        glfwTerminate();
-        return -1;
-    }
-    glfwMakeContextCurrent(window);
+    // get the size of the window
+    sf::Vector2u size = window.getSize();
+    unsigned int width = size.x;
+    unsigned int height = size.y;
     
-    glewExperimental = GL_TRUE;
-    if (glewInit() != GLEW_OK)
-    {
-        std::cout << "Failed to initalize GLEW" << std::endl;
-        return -1;
-    }
-    
-    int width, height;
-    glfwGetFramebufferSize(window, &width, &height);
-    
-    glViewport(0, 0, width, height);
-    
-    
-    // callback function for keypress
-    glfwSetKeyCallback(window, key_callback);
-    
-    
-    
-    // Rendering a Triangle for now. Can switch out later.
-    // draw a triangle vertices here for now.
-    GLfloat vertices[] =
-    {
-        -0.5f, -0.5f, 0.0f,
-         0.5f, -0.5f, 0.0f,
-         0.0f,  0.5f, 0.0f
-    };
-    
-    // Generate a Vertex Array Object (VAO)
-    GLuint VAO;
-    glGenVertexArrays(1, &VAO);
+    window.setVerticalSyncEnabled(true); // call it once, after creating the window
 
-    //  As soon as we want to draw an object,
-    // - we simply bind the VAO with the prefered settings
-    // - before drawing the object and that is it.
-glBindVertexArray(VAO);
+    sf::Texture texture1;
+    if (!texture1.loadFromFile("/Users/maxdietz/Desktop/GUIGame/GUIGame/Cards/c02.png"))
+        error("unable to load first card from file");
+    sf::Texture texture2;
+    if (!texture2.loadFromFile("/Users/maxdietz/Desktop/GUIGame/GUIGame/Cards/c03.png"))
+        error("unable to load first card from file");
+
     
-    // Generate unique ID for vertex obj.
-    GLuint VBO;
-    glGenBuffers(1,&VBO);
-    
-    // bind the vertex buffer object using GL_ARRAY_BUFFER
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    
-    // copy the previously defined vertex data into the buffer's memory
-    //GL_STATIC_DRAW: the data will most likely not change at all or very rarely.
-    //GL_DYNAMIC_DRAW: the data is likely to change a lot.
-    //GL_STREAM_DRAW: the data will change every time it is drawn.
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-    
-    /*
-     
-     As of now we stored the vertex data within memory on the graphics card as managed by a vertex buffer object named VBO. Next we want to create a vertex and fragment shader that actually processes this data, so let's start building those.
-    */
-    
-    // Vertex Shader
-    const GLchar* vertex_shader =
-    "#version 330 core\n"
-    
-    "layout (location = 0) in vec3 position;\n"
-    "void main()\n"
-    "{\n"
-    "gl_Position = vec4(position.x, position.y, position.z, 1.0);\n"
-    "}\n";
-    
-    // create a shader object
-    GLuint vertexShader;
-    vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    
-    // attach the shader source code to the shader object and compile the shader:
-    glShaderSource(vertexShader, 1, &vertex_shader, NULL);
-    glCompileShader(vertexShader);
+    // code to load first 2 cards with one off to the right
+    sf::Sprite two_of_clubs;
+    sf::Sprite three_of_clubs;
+    two_of_clubs.setTexture(texture1);
+    three_of_clubs.setTexture(texture2);
+    two_of_clubs.move(150, 0);
+    two_of_clubs.scale(0.2, 0.2);
+    three_of_clubs.scale(0.2,0.2);
     
     
-    // check for compile time errors
-    GLint success;
-    GLchar infoLog[512];
-    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
+    sf::FloatRect boundingBox = two_of_clubs.getGlobalBounds();
     
-    // infolog should store error message if we get one, by using glGetShaderiv to check,
-    // - glGetShaderInfoLog will retrieve error and message
-    if (!success)
-    {
-        glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
-    }
-    // If no errors were detected while compiling the vertex shader it is now compiled.
+    std::vector<sf::Sprite> sprites;
+    sprites.push_back(two_of_clubs);
+    sprites.push_back(three_of_clubs);
     
-    // Fragment Shader for color output
-    const GLchar* fragment_shader =
-    "#version 330 core\n"
-    
-    "out vec4 color;\n"
-    
-    "void main()\n"
-    "{\n"
-    "color = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
-    "}\n";
-    
-    // compiling fragment shader
-    GLuint fragmentShader;
-    fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragment_shader, NULL);
-    glCompileShader(fragmentShader);
-    
-    // Shader program to link the vertex and fragment shaders
-    GLuint shaderProgram;
-    shaderProgram = glCreateProgram(); // returns ID: reference to newly created program
-    
-    // Attach previously complied shaders and link them
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-    glLinkProgram(shaderProgram);
-    
-    // Error checking to see if linking the program failed.
-    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-    if (!success)
-    {
-        glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-    }
-    
-    // Can delete shader objects since we already linked them info the program
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
-    
-    // We need to tell OpenGL how it should interpret the vertex data using attributes
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
-    glEnableVertexAttribArray(0);
-// Unbind the Vertex Array Object (VAO);
-glBindVertexArray(0);
+    // code could be useful for saving code space, would prevent the excess pushback, dunno if it actually work.
+//    std::vector<sf::Sprite> sprites = std::vector < sf::Sprite >
+//    {
+//        sf::Sprite(texture1), sf::Sprite(texture2),
+//    };
     
     
-    // Program loop
-    while(!glfwWindowShouldClose(window))
-    {
-        // Check and call events.
-        glfwPollEvents();
-        
-        // Rendering commands here
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
-        
-        // Drawing Code
-        // activate the program object
-        // - every shader and rendering call after this will now use this program object and shaders.
-        glUseProgram(shaderProgram);
-        glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
-        glBindVertexArray(0);
-        
-        // Swap the buffers
-        glfwSwapBuffers(window);
-        
-        
-    }
+    // Create a sf::Music and put it to play for the program duration.
+    // Load a music to play
+    sf::Music music;
+    if (!music.openFromFile("/Users/maxdietz/Desktop/GUIGame/GUIGame/Sounds/loopmus.ogg"))
+        error("unable to load first card from file");
+    // Play the music
+    music.setLoop(true);
+    music.play();
+    music.setVolume(70);
     
+    
+    
+    // create and prepare texts for displaying.
+    sf::Font font;
+    if (!font.loadFromFile("/Users/maxdietz/Desktop/GUIGame/GUIGame/Fonts/Kyoto.ttf"))
+        error("Unable to load font from file");
+    sf::Text welcomeMessage("Welcome to BlackJack.", font, 60);
+    sf::Text betDisplay1("Your bet starts at 0.", font, 40);
+    sf::Text betDisplay2("Press the Up Arrow to increase the bet by 10", font, 40);
+    sf::Text beginMessage("Press Enter to Begin playing.", font, 60);
+    welcomeMessage.move(0, 0);
+    betDisplay1.move(0, 90);
+    betDisplay2.move(0, 130);
+    beginMessage.move(0, 300);
+    
+    
+    bool hasPlayerMadeABet = false;
 
     
     
-    glfwTerminate();
+    // Main loop or "Game Loop"
+    // Ends as soon as the sindow is closed.
+    while (window.isOpen())
+    {
+        // check all the window's events that were triggered since the last iteration of the loop
+        sf::Event event;
+        while (window.pollEvent(event))
+        {
+            // "close requested" event: we close the window
+            if (event.type == sf::Event::Closed)
+                window.close();
+            
+            if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+            {
+                // left mouse button is pressed:
+                
+            }
+            
+            // TODO: make a check for the bet being greater than 0 before executing this code.
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
+            {
+                // left key is pressed:
+                // increase the bet from Player class.
+                hasPlayerMadeABet = true;
+            }
+            
+            
+            sf::Vector2f tempMouse(sf::Mouse::getPosition(window));
+            if (two_of_clubs.getGlobalBounds().contains(tempMouse) &&
+                      event.type == sf::Event::MouseButtonReleased &&
+                      event.key.code == sf::Mouse::Left)
+            {
+               /*
+                
+                Add code here to the chip sprites on screen, so when you click the bet goes up in intervals.
+                
+                */
+            }
+        }
+        
+        // Clear the whole window before rendering a new frame
+        window.clear();
+        
+        
+        if (hasPlayerMadeABet == false)
+        {
+            window.draw(welcomeMessage);
+            window.draw(betDisplay1);
+            window.draw(betDisplay2);
+            window.draw(beginMessage);
+        }
+        
+        // Draw some graphical entities
+        if (hasPlayerMadeABet == true)
+        {
+            /*
+             
+             // add a card drawing noise here to play quickly for 2 cards.
+             
+             */
+            
+            window.draw(sprites[firstCardInDeck]);
+            window.draw(sprites[secondCardInDeck]);
+        }
+
+        
+        // End the current frame and display its contents on screen.
+        window.display();
+    }
+    
     return 0;
 }
 
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
-{
-    // When a user presses the space key, we set the window should close property to true,
-    // closing the application
-    if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, GL_TRUE);
-}
 
-
+/* Code to get and set mouse position if I need it.
+ 
+ 
+ // Get mouse position stuff
+ // get the global mouse position (relative to the desktop)
+ sf::Vector2i globalPosition = sf::Mouse::getPosition();
+ // get the local mouse position (relative to a window)
+//  sf::Vector2i localPosition = sf::Mouse::getPosition(window); // window is a sf::Window
+ 
+ // Set mouse position stuff
+ // set the mouse position globally (relative to the desktop)
+ sf::Mouse::setPosition(sf::Vector2i(10, 50));
+ // set the mouse position locally (relative to a window)
+ sf::Mouse::setPosition(sf::Vector2i(10, 50), window); // window is a sf::Window
+ 
+ */

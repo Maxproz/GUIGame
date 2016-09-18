@@ -8,13 +8,22 @@
 
 /* Begin PBXBuildFile section */
 		550831FD1D8CBBB200AC374B /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 550831FC1D8CBBB200AC374B /* main.cpp */; };
-		550832041D8CBCF900AC374B /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 550832031D8CBCF900AC374B /* OpenGL.framework */; };
-		550832061D8CBD0000AC374B /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 550832051D8CBD0000AC374B /* GLUT.framework */; };
-		550832081D8CBE8F00AC374B /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 550832071D8CBE8F00AC374B /* Cocoa.framework */; };
-		5508320A1D8CBE9E00AC374B /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 550832091D8CBE9E00AC374B /* IOKit.framework */; };
-		5508320C1D8CBEA300AC374B /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5508320B1D8CBEA300AC374B /* CoreVideo.framework */; };
-		550832221D8CD1E600AC374B /* libglfw3.3.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 550832211D8CD1E600AC374B /* libglfw3.3.2.dylib */; };
-		550832241D8CD58E00AC374B /* libGLEW.2.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 550832231D8CD58E00AC374B /* libGLEW.2.0.0.dylib */; };
+		550832341D8DE9BB00AC374B /* libsfml-audio.2.4.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 550832251D8DE9BB00AC374B /* libsfml-audio.2.4.0.dylib */; };
+		550832351D8DE9BB00AC374B /* libsfml-audio.2.4.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 550832261D8DE9BB00AC374B /* libsfml-audio.2.4.0.dylib */; };
+		550832361D8DE9BB00AC374B /* libsfml-audio.2.4.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 550832271D8DE9BB00AC374B /* libsfml-audio.2.4.0.dylib */; };
+		550832371D8DE9BB00AC374B /* libsfml-graphics.2.4.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 550832281D8DE9BB00AC374B /* libsfml-graphics.2.4.0.dylib */; };
+		550832381D8DE9BB00AC374B /* libsfml-graphics.2.4.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 550832291D8DE9BB00AC374B /* libsfml-graphics.2.4.0.dylib */; };
+		550832391D8DE9BB00AC374B /* libsfml-graphics.2.4.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5508322A1D8DE9BB00AC374B /* libsfml-graphics.2.4.0.dylib */; };
+		5508323A1D8DE9BB00AC374B /* libsfml-network.2.4.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5508322B1D8DE9BB00AC374B /* libsfml-network.2.4.0.dylib */; };
+		5508323B1D8DE9BB00AC374B /* libsfml-network.2.4.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5508322C1D8DE9BB00AC374B /* libsfml-network.2.4.0.dylib */; };
+		5508323C1D8DE9BB00AC374B /* libsfml-network.2.4.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5508322D1D8DE9BB00AC374B /* libsfml-network.2.4.0.dylib */; };
+		5508323D1D8DE9BB00AC374B /* libsfml-system.2.4.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5508322E1D8DE9BB00AC374B /* libsfml-system.2.4.0.dylib */; };
+		5508323E1D8DE9BB00AC374B /* libsfml-system.2.4.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5508322F1D8DE9BB00AC374B /* libsfml-system.2.4.0.dylib */; };
+		5508323F1D8DE9BB00AC374B /* libsfml-system.2.4.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 550832301D8DE9BB00AC374B /* libsfml-system.2.4.0.dylib */; };
+		550832401D8DE9BB00AC374B /* libsfml-window.2.4.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 550832311D8DE9BB00AC374B /* libsfml-window.2.4.0.dylib */; };
+		550832411D8DE9BB00AC374B /* libsfml-window.2.4.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 550832321D8DE9BB00AC374B /* libsfml-window.2.4.0.dylib */; };
+		550832421D8DE9BB00AC374B /* libsfml-window.2.4.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 550832331D8DE9BB00AC374B /* libsfml-window.2.4.0.dylib */; };
+		550832451D8DEDC500AC374B /* MPErrors.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 550832431D8DEDC500AC374B /* MPErrors.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -32,13 +41,23 @@
 /* Begin PBXFileReference section */
 		550831F91D8CBBB200AC374B /* GUIGame */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = GUIGame; sourceTree = BUILT_PRODUCTS_DIR; };
 		550831FC1D8CBBB200AC374B /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		550832031D8CBCF900AC374B /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
-		550832051D8CBD0000AC374B /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
-		550832071D8CBE8F00AC374B /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
-		550832091D8CBE9E00AC374B /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
-		5508320B1D8CBEA300AC374B /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
-		550832211D8CD1E600AC374B /* libglfw3.3.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libglfw3.3.2.dylib; path = ../../../../usr/local/Cellar/glfw3/3.2.1/lib/libglfw3.3.2.dylib; sourceTree = "<group>"; };
-		550832231D8CD58E00AC374B /* libGLEW.2.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libGLEW.2.0.0.dylib; path = ../../../../usr/local/lib/libGLEW.2.0.0.dylib; sourceTree = "<group>"; };
+		550832251D8DE9BB00AC374B /* libsfml-audio.2.4.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libsfml-audio.2.4.0.dylib"; path = "../../../../usr/local/lib/libsfml-audio.2.4.0.dylib"; sourceTree = "<group>"; };
+		550832261D8DE9BB00AC374B /* libsfml-audio.2.4.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libsfml-audio.2.4.0.dylib"; path = "../../../../usr/local/lib/libsfml-audio.2.4.0.dylib"; sourceTree = "<group>"; };
+		550832271D8DE9BB00AC374B /* libsfml-audio.2.4.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libsfml-audio.2.4.0.dylib"; path = "../../../../usr/local/lib/libsfml-audio.2.4.0.dylib"; sourceTree = "<group>"; };
+		550832281D8DE9BB00AC374B /* libsfml-graphics.2.4.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libsfml-graphics.2.4.0.dylib"; path = "../../../../usr/local/lib/libsfml-graphics.2.4.0.dylib"; sourceTree = "<group>"; };
+		550832291D8DE9BB00AC374B /* libsfml-graphics.2.4.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libsfml-graphics.2.4.0.dylib"; path = "../../../../usr/local/lib/libsfml-graphics.2.4.0.dylib"; sourceTree = "<group>"; };
+		5508322A1D8DE9BB00AC374B /* libsfml-graphics.2.4.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libsfml-graphics.2.4.0.dylib"; path = "../../../../usr/local/lib/libsfml-graphics.2.4.0.dylib"; sourceTree = "<group>"; };
+		5508322B1D8DE9BB00AC374B /* libsfml-network.2.4.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libsfml-network.2.4.0.dylib"; path = "../../../../usr/local/lib/libsfml-network.2.4.0.dylib"; sourceTree = "<group>"; };
+		5508322C1D8DE9BB00AC374B /* libsfml-network.2.4.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libsfml-network.2.4.0.dylib"; path = "../../../../usr/local/lib/libsfml-network.2.4.0.dylib"; sourceTree = "<group>"; };
+		5508322D1D8DE9BB00AC374B /* libsfml-network.2.4.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libsfml-network.2.4.0.dylib"; path = "../../../../usr/local/lib/libsfml-network.2.4.0.dylib"; sourceTree = "<group>"; };
+		5508322E1D8DE9BB00AC374B /* libsfml-system.2.4.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libsfml-system.2.4.0.dylib"; path = "../../../../usr/local/lib/libsfml-system.2.4.0.dylib"; sourceTree = "<group>"; };
+		5508322F1D8DE9BB00AC374B /* libsfml-system.2.4.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libsfml-system.2.4.0.dylib"; path = "../../../../usr/local/lib/libsfml-system.2.4.0.dylib"; sourceTree = "<group>"; };
+		550832301D8DE9BB00AC374B /* libsfml-system.2.4.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libsfml-system.2.4.0.dylib"; path = "../../../../usr/local/lib/libsfml-system.2.4.0.dylib"; sourceTree = "<group>"; };
+		550832311D8DE9BB00AC374B /* libsfml-window.2.4.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libsfml-window.2.4.0.dylib"; path = "../../../../usr/local/lib/libsfml-window.2.4.0.dylib"; sourceTree = "<group>"; };
+		550832321D8DE9BB00AC374B /* libsfml-window.2.4.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libsfml-window.2.4.0.dylib"; path = "../../../../usr/local/lib/libsfml-window.2.4.0.dylib"; sourceTree = "<group>"; };
+		550832331D8DE9BB00AC374B /* libsfml-window.2.4.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libsfml-window.2.4.0.dylib"; path = "../../../../usr/local/lib/libsfml-window.2.4.0.dylib"; sourceTree = "<group>"; };
+		550832431D8DEDC500AC374B /* MPErrors.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MPErrors.cpp; path = ../../BlackJack/MPErrors.cpp; sourceTree = "<group>"; };
+		550832441D8DEDC500AC374B /* MPErrors.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = MPErrors.hpp; path = ../../BlackJack/MPErrors.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -46,13 +65,21 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				550832241D8CD58E00AC374B /* libGLEW.2.0.0.dylib in Frameworks */,
-				550832221D8CD1E600AC374B /* libglfw3.3.2.dylib in Frameworks */,
-				5508320C1D8CBEA300AC374B /* CoreVideo.framework in Frameworks */,
-				5508320A1D8CBE9E00AC374B /* IOKit.framework in Frameworks */,
-				550832081D8CBE8F00AC374B /* Cocoa.framework in Frameworks */,
-				550832061D8CBD0000AC374B /* GLUT.framework in Frameworks */,
-				550832041D8CBCF900AC374B /* OpenGL.framework in Frameworks */,
+				550832341D8DE9BB00AC374B /* libsfml-audio.2.4.0.dylib in Frameworks */,
+				550832351D8DE9BB00AC374B /* libsfml-audio.2.4.0.dylib in Frameworks */,
+				550832361D8DE9BB00AC374B /* libsfml-audio.2.4.0.dylib in Frameworks */,
+				550832371D8DE9BB00AC374B /* libsfml-graphics.2.4.0.dylib in Frameworks */,
+				550832381D8DE9BB00AC374B /* libsfml-graphics.2.4.0.dylib in Frameworks */,
+				550832391D8DE9BB00AC374B /* libsfml-graphics.2.4.0.dylib in Frameworks */,
+				5508323A1D8DE9BB00AC374B /* libsfml-network.2.4.0.dylib in Frameworks */,
+				5508323B1D8DE9BB00AC374B /* libsfml-network.2.4.0.dylib in Frameworks */,
+				5508323C1D8DE9BB00AC374B /* libsfml-network.2.4.0.dylib in Frameworks */,
+				5508323D1D8DE9BB00AC374B /* libsfml-system.2.4.0.dylib in Frameworks */,
+				5508323E1D8DE9BB00AC374B /* libsfml-system.2.4.0.dylib in Frameworks */,
+				5508323F1D8DE9BB00AC374B /* libsfml-system.2.4.0.dylib in Frameworks */,
+				550832401D8DE9BB00AC374B /* libsfml-window.2.4.0.dylib in Frameworks */,
+				550832411D8DE9BB00AC374B /* libsfml-window.2.4.0.dylib in Frameworks */,
+				550832421D8DE9BB00AC374B /* libsfml-window.2.4.0.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -62,13 +89,21 @@
 		550831F01D8CBBB200AC374B = {
 			isa = PBXGroup;
 			children = (
-				550832231D8CD58E00AC374B /* libGLEW.2.0.0.dylib */,
-				550832211D8CD1E600AC374B /* libglfw3.3.2.dylib */,
-				5508320B1D8CBEA300AC374B /* CoreVideo.framework */,
-				550832091D8CBE9E00AC374B /* IOKit.framework */,
-				550832071D8CBE8F00AC374B /* Cocoa.framework */,
-				550832051D8CBD0000AC374B /* GLUT.framework */,
-				550832031D8CBCF900AC374B /* OpenGL.framework */,
+				550832251D8DE9BB00AC374B /* libsfml-audio.2.4.0.dylib */,
+				550832261D8DE9BB00AC374B /* libsfml-audio.2.4.0.dylib */,
+				550832271D8DE9BB00AC374B /* libsfml-audio.2.4.0.dylib */,
+				550832281D8DE9BB00AC374B /* libsfml-graphics.2.4.0.dylib */,
+				550832291D8DE9BB00AC374B /* libsfml-graphics.2.4.0.dylib */,
+				5508322A1D8DE9BB00AC374B /* libsfml-graphics.2.4.0.dylib */,
+				5508322B1D8DE9BB00AC374B /* libsfml-network.2.4.0.dylib */,
+				5508322C1D8DE9BB00AC374B /* libsfml-network.2.4.0.dylib */,
+				5508322D1D8DE9BB00AC374B /* libsfml-network.2.4.0.dylib */,
+				5508322E1D8DE9BB00AC374B /* libsfml-system.2.4.0.dylib */,
+				5508322F1D8DE9BB00AC374B /* libsfml-system.2.4.0.dylib */,
+				550832301D8DE9BB00AC374B /* libsfml-system.2.4.0.dylib */,
+				550832311D8DE9BB00AC374B /* libsfml-window.2.4.0.dylib */,
+				550832321D8DE9BB00AC374B /* libsfml-window.2.4.0.dylib */,
+				550832331D8DE9BB00AC374B /* libsfml-window.2.4.0.dylib */,
 				550831FB1D8CBBB200AC374B /* GUIGame */,
 				550831FA1D8CBBB200AC374B /* Products */,
 			);
@@ -86,6 +121,8 @@
 			isa = PBXGroup;
 			children = (
 				550831FC1D8CBBB200AC374B /* main.cpp */,
+				550832431D8DEDC500AC374B /* MPErrors.cpp */,
+				550832441D8DEDC500AC374B /* MPErrors.hpp */,
 			);
 			path = GUIGame;
 			sourceTree = "<group>";
@@ -147,6 +184,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				550831FD1D8CBBB200AC374B /* main.cpp in Sources */,
+				550832451D8DEDC500AC374B /* MPErrors.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
