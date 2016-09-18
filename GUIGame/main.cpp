@@ -53,6 +53,7 @@ int main()
     sprites.push_back(two_of_clubs);
     sprites.push_back(three_of_clubs);
     
+    
     // code could be useful for saving code space, would prevent the excess pushback, dunno if it actually work.
 //    std::vector<sf::Sprite> sprites = std::vector < sf::Sprite >
 //    {
@@ -86,13 +87,11 @@ int main()
     beginMessage.move(0, 300);
     
     
+
     bool hasPlayerMadeABet = false;
 
-    
-    
-    // Main loop or "Game Loop"
-    // Ends as soon as the sindow is closed.
-    while (window.isOpen())
+    // Program loop
+    while(window.isOpen())
     {
         // check all the window's events that were triggered since the last iteration of the loop
         sf::Event event;
@@ -133,7 +132,7 @@ int main()
         // Clear the whole window before rendering a new frame
         window.clear();
         
-        
+
         if (hasPlayerMadeABet == false)
         {
             window.draw(welcomeMessage);
@@ -160,7 +159,6 @@ int main()
         window.display();
     }
     
-    return 0;
 }
 
 
