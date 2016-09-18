@@ -10,32 +10,103 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include "MPErrors.hpp"
-#include <SFML/Graphics/RenderWindow.hpp>
+//#include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Audio.hpp>
-#include <fstream>
+
 
 
 const int firstCardInDeck = 0;
 const int secondCardInDeck = 1;
 
+class UIButton : public sf::Transformable, public sf::Drawable
+{
+public:
+    sf::RectangleShape _rectangle;
+    sf::Text _text;
+
+    UIButton()
+    {
+        _rectangle.setSize(sf::Vector2f(120, 50));
+        _rectangle.setFillColor(sf::Color::Black);
+        
+        sf::Font tempFont;
+        if (!tempFont.loadFromFile("/Users/maxdietz/Desktop/GUIGame/GUIGame/Fonts/Kyoto.ttf"))
+            error("Unable to load font from file");
+        _text.setFont(tempFont);
+        _text.setString("Temp");
+        _text.setCharacterSize(24);
+        _text.setFillColor(sf::Color::Red);
+    }
+    
+    bool isClicked()
+    {
+        return _isClicked;
+    }
+    
+    void setClickedTrue() { _isClicked = true; }
+    void setClickedFalse() { _isClicked = false; }
+    
+private:
+    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+    bool _isClicked = false;
+};
+
+
+// for now, forget money and set the starting chips to 300
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(800, 600), "SFML window");
     
-    // get the size of the window
+    // get the size of the window, might use these later.
     sf::Vector2u size = window.getSize();
     unsigned int width = size.x;
     unsigned int height = size.y;
     
-    window.setVerticalSyncEnabled(true); // call it once, after creating the window
+    // call it once, after creating the window
+    window.setVerticalSyncEnabled(true);
 
+    
+    // Prepare Player chips
+    // Players will get:
+    // 4 purple chip for 25$ each - total value - (100$)
+    // 30 red chips for 5$ each - total value - (150$)
+    // 50 white chips for 1$ each - total value - (50$) - (300$) all together.
+    // Load the chip png's from file.
+    sf::Texture chipFileWhite;
+    if (!chipFileWhite.loadFromFile("/Users/maxdietz/Desktop/GUIGame/GUIGame/Chips/chipWhite.png"))
+        error("Unable to load white chip");
+    sf::Texture chipFileRed;
+    if (!chipFileRed.loadFromFile("/Users/maxdietz/Desktop/GUIGame/GUIGame/Chips/chipRed.png"))
+        error("Unable to load red chip");
+    sf::Texture chipFilePurple;
+    if (!chipFilePurple.loadFromFile("/Users/maxdietz/Desktop/GUIGame/GUIGame/Chips/chipPurple.png"))
+        error("Unable to load purple chip");
+    
+    sf::Sprite whiteChip;
+    whiteChip.setTexture(chipFileWhite);
+    sf::Sprite redChip;
+    redChip.setTexture(chipFileRed);
+    sf::Sprite purpleChip;
+    purpleChip.setTexture(chipFilePurple);
+    
+    // Move the Chips into their starting position.
+    whiteChip.scale(0.8, 0.8);
+    redChip.scale(0.8, 0.8);
+    purpleChip.scale(0.8, 0.8);
+    
+    whiteChip.move(470, 490);
+    redChip.move(575, 490);
+    purpleChip.move(680, 490);
+    
+    
+    // Prepare Cards
     sf::Texture texture1;
     if (!texture1.loadFromFile("/Users/maxdietz/Desktop/GUIGame/GUIGame/Cards/c02.png"))
         error("unable to load first card from file");
     sf::Texture texture2;
     if (!texture2.loadFromFile("/Users/maxdietz/Desktop/GUIGame/GUIGame/Cards/c03.png"))
         error("unable to load first card from file");
-
+    
     
     // code to load first 2 cards with one off to the right
     sf::Sprite two_of_clubs;
@@ -87,9 +158,14 @@ int main()
     beginMessage.move(0, 300);
     
     
-
+    bool hasStartingChips = true; // need better idea for this chip tracking later.
     bool hasPlayerMadeABet = false;
 
+    
+    // Try to setup the Buttons for Hit/Stay
+    UIButton hitButton;
+    
+    
     // Program loop
     while(window.isOpen())
     {
@@ -132,7 +208,16 @@ int main()
         // Clear the whole window before rendering a new frame
         window.clear();
         
-
+        // Try to draw UI Buttons
+        window.draw(hitButton);
+        
+        if (hasStartingChips == true && hasPlayerMadeABet == true)
+        {
+            window.draw(whiteChip);
+            window.draw(redChip);
+            window.draw(purpleChip);
+        }
+        
         if (hasPlayerMadeABet == false)
         {
             window.draw(welcomeMessage);
@@ -154,7 +239,6 @@ int main()
             window.draw(sprites[secondCardInDeck]);
         }
 
-        
         // End the current frame and display its contents on screen.
         window.display();
     }
