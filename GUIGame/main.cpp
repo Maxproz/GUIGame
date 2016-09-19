@@ -23,7 +23,33 @@
 // Blackjack random number generator for values (0 - 51)
 boost::mt19937 gen;
 
+// Enumeration for user-defined actions
+enum MyAction
+{
+    Location,
+    Quit,
+    Resize,
+};
 
+
+void onLocation(thor::ActionContext<MyAction> context)
+{
+    // context.Window is a pointer to the sf::Window passed to the thor::ActionMap constructor. It can
+    // be used for mouse input relative to a window, as follows:
+    sf::Vector2i mousePosition = sf::Mouse::getPosition(*context.window);
+    std::cout << "Location: " << thor::toString(mousePosition) << std::endl;
+}
+
+void onResize(thor::ActionContext<MyAction> context)
+{
+    // The sf::Event member variable called type has always the value
+    // - sf::Event::Resized, as specified in the thor::Action constructor.
+    // Since the Resize action has been triggered by an sf::Event
+    // - (and not by a sf::Keyboard, sf::Mouse or sf::Joystick),
+    // - we can also be sure that context.event is no null pointer.
+    sf::Event event = *context.event;
+    std::cout << "Resized!   New size = (" << event.size.width << ", " << event.size.height << ")" << std::endl;
+}
 
 // The default position of a transformable object is (0, 0).
 // The default rotation of a transformable object is 0.
@@ -31,8 +57,8 @@ boost::mt19937 gen;
 // for now, forget money and set the starting chips to 300
 
 // TODO: add a get value function and add the values together of my first 2 cards
-// - Then get the hit and stand buttons hooked up.
-
+// for animation idea:
+// http://pushbuttonreceivecode.com/blog/simple-boss-example-using-sfml-and-thor
 int main()
 {
     Deck blackJackDeck;
@@ -46,7 +72,7 @@ int main()
     int vol, eff, diff;
     
 // crashes the game first time if the file is not already in there.
-// probably want to do a save first with basic info.
+// probably want to do a save first with basic info. <-- clean this code out, come up with a good solution
 //    if (!op.loadOptions(op, "options.xml"))
 //    {
 //        std::cerr << "Could not load options." << std::endl;
@@ -246,53 +272,35 @@ int main()
     submitBetBtn.setPosition(sf::Vector2f(200.f,520.f));
     submitBetBtn.setSize(50);
     
-//    // Try to setup the Buttons for Hit/Stay
-//    sf::Texture texture3;
-//    if (!texture3.loadFromFile("/Users/maxdietz/Desktop/GUIGame/GUIGame/Buttons/Stay.png"))
-//        error("unable to load Stay Button from file");
-//    sf::Sprite stayButton;
-//    stayButton.scale(0.4, 0.5);
-//    stayButton.setTexture(texture3);
-//    stayButton.move(50, 490);
-//    sf::Text stayButtonText("STAY", font, 80);
-//    stayButtonText.setPosition(stayButton.getPosition());
-//    
-//    sf::Texture texture4;
-//    if (!texture4.loadFromFile("/Users/maxdietz/Desktop/GUIGame/GUIGame/Buttons/Hit.png"))
-//        error("unable to load Hit Button from file");
-//    sf::Sprite hitButton;
-//    hitButton.scale(0.4, 0.5);
-//    hitButton.setTexture(texture4);
-//    hitButton.move(250, 490);
-//    sf::Text hitButtonText("HIT", font, 80);
-//    hitButtonText.setPosition(hitButton.getPosition());
-//    hitButtonText.move(20, 0);
-//    
-//    // Setup a Submit Bet Button
-//    sf::Texture texture5;
-//    if (!texture5.loadFromFile("/Users/maxdietz/Desktop/GUIGame/GUIGame/Buttons/Submit.png"))
-//        error("Unable to load Submit Bet Button");
-//    sf::Sprite submitBetButton;
-//    submitBetButton.scale(1.0, 0.5);
-//    submitBetButton.setTexture(texture5);
-//    submitBetButton.move(20, 490);
-//    sf::Text submitBetButtonText("SUBMIT BET", font, 75);
-//    submitBetButtonText.setPosition(submitBetButton.getPosition());
-//    submitBetButtonText.move(15, 5);
-//    submitBetButtonText.setFillColor(sf::Color::Blue);
-//    
     
+    // Maybe map some actions out later: reference areas below
+    // https://github.com/Bromeon/Thor/blob/master/examples/Action.cpp
+    // http://www.bromeon.ch/libraries/thor/tutorials/v2.0/actions.html
     thor::Action leftClickedOnce(sf::Mouse::Left, thor::Action::PressOnce);
     thor::Action rightClickedOnce(sf::Mouse::Right, thor::Action::PressOnce);
     thor::Action leftOrRightClickOnce = leftClickedOnce || rightClickedOnce;
+    thor::Action resizeTheWindow = thor::Action(sf::Event::Resized);
+    thor::Action quitTheGame = // Quit: Release the escape key or click the [X] (single events)
+    thor::Action(sf::Keyboard::Escape, thor::Action::ReleaseOnce) || thor::Action(sf::Event::Closed);
     
+    // Setup mouse cord and resize actions with map
+    // Create thor::EventSystem to connect Resize and Shoot actions with callbacks
+    // Use connect0() instead of connect() when callback has no parameter
+    
+    thor::ActionMap<MyAction> map;
+    map[Location] = (leftClickedOnce || rightClickedOnce);
+    map[Resize] = resizeTheWindow;
+    map[Quit] = quitTheGame;
+    
+    thor::ActionMap<MyAction>::CallbackSystem system;
+    system.connect(Location, &onLocation);
+    system.connect(Resize, &onResize);
     
     // big scoped variables
     bool hasStartingChips = true; // Player starts with Chips, need better idea for this chip tracking later.
     bool isWelcomeScreen = true;
     bool isBetSubmitted = false;
     
-
     sf::Sprite* firstCard = getFirstCardSprite(blackJackDeck, spriteVector, 0);
     sf::Sprite* secondCard = getFirstCardSprite(blackJackDeck, spriteVector, 1);
     secondCard->move(160, 0);
@@ -300,6 +308,13 @@ int main()
     // Program loop
     while(window.isOpen())
     {
+//        map.update(window);
+//        
+//        if (map.isActive(Quit))
+//            window.close();
+        // The map is interfereing with my other button events, gonna think of a solution.
+        // maybe one here - http://www.gamefromscratch.com/?tag=/SFML&page=2
+        
         // variable to hold the temp mouse position on the current frame.
         sf::Vector2f tempMouse(sf::Mouse::getPosition(window));
         
@@ -307,15 +322,12 @@ int main()
         sf::Event event;
         while (window.pollEvent(event))
         {
+            
             // "close requested" event: we close the window
             if (event.type == sf::Event::Closed)
                 window.close();
             
             // Welcome screen is drawn first.
-        
-            
-            
-            
             // TODO: make a check for the bet being greater than 0 before executing this code.
             if (isWelcomeScreen && playBtn.getState() == gui::state::clicked)
             {
@@ -338,70 +350,72 @@ int main()
             hitBtn.update(event,window);
             stayBtn.update(event,window);
             submitBetBtn.update(event,window);
-        
-        
-            // Clear the whole window before rendering a new frame
-            window.clear();
-            
-            // Test code for checking card display.
-    //        for (auto it = spriteVector.begin(); it != spriteVector.end(); ++it)
-    //        {
-    //            window.draw(*it);
-    //        }
-            
-            if (isWelcomeScreen == true)
-            {
-                // The inital load screen
-                // Draw the messeges and the playBtn
-                window.draw(playBtn);
-                
-                window.draw(welcomeMessage);
-                window.draw(betDisplay1);
-                window.draw(betDisplay2);
-                window.draw(beginMessage);
-            }
-            
-            // Then the Submit bet button and chips appear until the player submits the bet.
-            // - after submitting the chips will stay on screen and the submit bet button will be
-            // replaced by the hit and stay buttons.
-            if (hasStartingChips == true && isWelcomeScreen == false)
-            {
-                if (isBetSubmitted == false)
-                {
-                    window.draw(submitBetBtn);
-//                    window.draw(submitBetButtonText);
-                    window.draw(whiteChip);
-                    window.draw(redChip);
-                    window.draw(purpleChip);
-                }
-                else
-                {
-                    // Replace the submit bet button with these
-                    window.draw(stayBtn);
-//                    window.draw(stayButtonText);
-                    window.draw(hitBtn);
-//                    window.draw(hitButtonText);
-                    window.draw(whiteChip);
-                    window.draw(redChip);
-                    window.draw(purpleChip);
-                }
-            }
-            
-            if (isBetSubmitted == true)
-            {
-                /*
-                 // add a card drawing noise here to play quickly for 2 cards.
-                 */
-                
-                window.draw(*firstCard);
-                window.draw(*secondCard);
-                
-            }
-                              
-            // End the current frame and display its contents on screen.
-            window.display();
         }
+        
+        // Clear the whole window before rendering a new frame
+        window.clear();
+        
+        // Test code for checking card display.
+//        for (auto it = spriteVector.begin(); it != spriteVector.end(); ++it)
+//        {
+//            window.draw(*it);
+//        }
+
+        
+        if (isWelcomeScreen == true)
+        {
+            // The inital load screen
+            // Draw the messeges and the playBtn
+            window.draw(playBtn);
+            
+            window.draw(welcomeMessage);
+            window.draw(betDisplay1);
+            window.draw(betDisplay2);
+            window.draw(beginMessage);
+        }
+        
+        // Then the Submit bet button and chips appear until the player submits the bet.
+        // - after submitting the chips will stay on screen and the submit bet button will be
+        // replaced by the hit and stay buttons.
+        if (hasStartingChips == true && isWelcomeScreen == false)
+        {
+            if (isBetSubmitted == false)
+            {
+                window.draw(submitBetBtn);
+//                    window.draw(submitBetButtonText);
+                window.draw(whiteChip);
+                window.draw(redChip);
+                window.draw(purpleChip);
+            }
+            else
+            {
+                // Replace the submit bet button with these
+                window.draw(stayBtn);
+//                    window.draw(stayButtonText);
+                window.draw(hitBtn);
+//                    window.draw(hitButtonText);
+                window.draw(whiteChip);
+                window.draw(redChip);
+                window.draw(purpleChip);
+            }
+        }
+        
+        if (isBetSubmitted == true)
+        {
+            /*
+             // add a card drawing noise here to play quickly for 2 cards.
+             */
+            
+            window.draw(*firstCard);
+            window.draw(*secondCard);
+        }
+        
+        map.invokeCallbacks(system, &window);
+        
+        // End the current frame and display its contents on screen.
+        window.display();
     }
+    
 }
 
 // the long click inside code global bounds code, maybe use later.
