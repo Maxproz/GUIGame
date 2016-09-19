@@ -31,6 +31,9 @@
 		5508325C1D8F87E800AC374B /* libboost_serialization.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5508325B1D8F87E800AC374B /* libboost_serialization.dylib */; };
 		5508325F1D8F8EC600AC374B /* button.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5508325D1D8F8EC600AC374B /* button.cpp */; };
 		550832611D8FA6CB00AC374B /* libthor.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 550832601D8FA6CB00AC374B /* libthor.dylib */; };
+		550832641D90996700AC374B /* Typewriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 550832621D90996700AC374B /* Typewriter.cpp */; };
+		550832671D90997600AC374B /* DataTables.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 550832651D90997600AC374B /* DataTables.cpp */; };
+		5508326A1D90A01300AC374B /* HexGrid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 550832681D90A01300AC374B /* HexGrid.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -77,6 +80,12 @@
 		5508325D1D8F8EC600AC374B /* button.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = button.cpp; sourceTree = "<group>"; };
 		5508325E1D8F8EC600AC374B /* button.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = button.hpp; sourceTree = "<group>"; };
 		550832601D8FA6CB00AC374B /* libthor.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libthor.dylib; path = ../../../../usr/local/lib/libthor.dylib; sourceTree = "<group>"; };
+		550832621D90996700AC374B /* Typewriter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Typewriter.cpp; sourceTree = "<group>"; };
+		550832631D90996700AC374B /* Typewriter.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Typewriter.hpp; sourceTree = "<group>"; };
+		550832651D90997600AC374B /* DataTables.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DataTables.cpp; sourceTree = "<group>"; };
+		550832661D90997600AC374B /* DataTables.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DataTables.hpp; sourceTree = "<group>"; };
+		550832681D90A01300AC374B /* HexGrid.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HexGrid.cpp; sourceTree = "<group>"; };
+		550832691D90A01300AC374B /* HexGrid.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = HexGrid.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -156,6 +165,12 @@
 				550832591D8F842A00AC374B /* opstruct.hpp */,
 				5508325D1D8F8EC600AC374B /* button.cpp */,
 				5508325E1D8F8EC600AC374B /* button.hpp */,
+				550832621D90996700AC374B /* Typewriter.cpp */,
+				550832631D90996700AC374B /* Typewriter.hpp */,
+				550832651D90997600AC374B /* DataTables.cpp */,
+				550832661D90997600AC374B /* DataTables.hpp */,
+				550832681D90A01300AC374B /* HexGrid.cpp */,
+				550832691D90A01300AC374B /* HexGrid.hpp */,
 			);
 			path = GUIGame;
 			sourceTree = "<group>";
@@ -220,8 +235,11 @@
 				5508325A1D8F842A00AC374B /* opstruct.cpp in Sources */,
 				5508324B1D8E6C8600AC374B /* Deck.cpp in Sources */,
 				550832481D8E6A8E00AC374B /* Card.cpp in Sources */,
+				550832671D90997600AC374B /* DataTables.cpp in Sources */,
 				550831FD1D8CBBB200AC374B /* main.cpp in Sources */,
 				550832451D8DEDC500AC374B /* MPErrors.cpp in Sources */,
+				5508326A1D90A01300AC374B /* HexGrid.cpp in Sources */,
+				550832641D90996700AC374B /* Typewriter.cpp in Sources */,
 				5508325F1D8F8EC600AC374B /* button.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

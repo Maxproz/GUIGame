@@ -19,6 +19,9 @@
 #include "opstruct.hpp"
 #include "button.hpp"
 #include <Thor/Input.hpp>
+#include "DataTables.hpp"
+#include "Typewriter.hpp"
+#include "HexGrid.hpp"
 
 // Blackjack random number generator for values (0 - 51)
 boost::mt19937 gen;
@@ -59,6 +62,8 @@ void onResize(thor::ActionContext<MyAction> context)
 // TODO: add a get value function and add the values together of my first 2 cards
 // for animation idea:
 // http://pushbuttonreceivecode.com/blog/simple-boss-example-using-sfml-and-thor
+
+//  Make my background the grid of polygons from the earlier code I compiledi bjarecode.
 int main()
 {
     Deck blackJackDeck;
@@ -183,7 +188,8 @@ int main()
     // Players will get:
     // 4 purple chip for 25$ each - total value - (100$)
     // 30 red chips for 5$ each - total value - (150$)
-    // 50 white chips for 1$ each - total value - (50$) - (300$) all together.
+    // 50 white chips for 1$ each - total value - (50$)
+    // (300$) all together.
     // Load the chip png's from file.
     sf::Texture chipFileWhite;
     if (!chipFileWhite.loadFromFile("/Users/maxdietz/Desktop/GUIGame/GUIGame/Chips/chipWhite.png"))
@@ -237,7 +243,7 @@ int main()
     welcomeMessage.move(0, 0);
     betDisplay1.move(0, 90);
     betDisplay2.move(0, 130);
-    beginMessage.move(0, 300);
+    beginMessage.move(0, 500.f);
     
     // Try to setup updated Buttons
     gui::button playBtn("Play!", font, sf::Vector2f(100.f,100.f), gui::style::save);
@@ -245,8 +251,8 @@ int main()
     gui::button stayBtn("Stay", font, sf::Vector2f(300.f, 100.f), gui::style::clean);
     gui::button submitBetBtn("Enter Bet", font, sf::Vector2f(300.f, 200.f), gui::style::none);
     
-    playBtn.setPosition(sf::Vector2f(160.f,340.f));
-
+    playBtn.setPosition(sf::Vector2f(160.f,550.f));
+    playBtn.setColorNormal(sf::Color::Black);
     
     hitBtn.setPosition(sf::Vector2f(100.f,520.f));
     hitBtn.setSize(42);
@@ -305,6 +311,34 @@ int main()
     sf::Sprite* secondCard = getFirstCardSprite(blackJackDeck, spriteVector, 1);
     secondCard->move(160, 0);
     
+    
+    // setup typewriter to replace the inital welcome messages.
+    std::vector<WelcomeScreenMessages> welcomeMsgData = initalizeEnemyProfileData();
+    
+    std::map<sf::Uint32, std::string> welcomeMsgInfo;
+    welcomeMsgInfo[0] = welcomeMsgData[0].name + "\n\n" + welcomeMsgData[0].description;
+    
+    welcomeMsgInfo[1] = welcomeMsgData[1].name + "\n\n" + welcomeMsgData[1].description;
+    welcomeMsgInfo[2] = welcomeMsgData[2].name + "\n\n" + welcomeMsgData[2].description;
+    welcomeMsgInfo[3] = welcomeMsgData[3].name + "\n\n" + welcomeMsgData[3].description;
+    
+    std::size_t currItem = 0;
+    std::size_t maxIter = welcomeMsgInfo.size()-1;
+    std::cout << maxIter << std::endl;
+    
+    sf::Font myFont;
+    if (!myFont.loadFromFile("/MP/cont.ttf"))
+        std::cerr << "Could not load font cont.ttf" << std::endl;
+    
+    Typewriter myTypeWriter("empty", myFont, 32, .05f);
+    myTypeWriter.setPosition(sf::Vector2f(400.f, 200.f));
+    
+    
+    // typewriter works, try to setup background grid
+    mpbgs::hexgrid backgroundGrid(window, mpbgs::hexgrid::hexStyle::colorful, 0.90f);
+    
+    
+    
     // Program loop
     while(window.isOpen())
     {
@@ -323,10 +357,43 @@ int main()
         while (window.pollEvent(event))
         {
             
-            // "close requested" event: we close the window
-            if (event.type == sf::Event::Closed)
-                window.close();
-            
+            if (event.type == sf::Event::KeyPressed)
+            {
+                switch (event.key.code)
+                {
+                    case sf::Keyboard::Escape:
+                    {
+                        window.close();
+                        return 0;
+                    }
+                    break;
+                        
+                    case sf::Keyboard::Left:
+                    {
+                        if (currItem <= 0)
+                            currItem = 0;
+                        else
+                            currItem--;
+                        
+                        myTypeWriter.reset();
+                    }
+                    break;
+                        
+                    case sf::Keyboard::Right:
+                    {
+                        if (currItem >= maxIter)
+                            currItem = maxIter;
+                        else
+                            currItem++;
+                        
+                        myTypeWriter.reset();
+                    }
+                    break;
+                        
+                    default:
+                        break;
+                }
+            }
             // Welcome screen is drawn first.
             // TODO: make a check for the bet being greater than 0 before executing this code.
             if (isWelcomeScreen && playBtn.getState() == gui::state::clicked)
@@ -352,8 +419,19 @@ int main()
             submitBetBtn.update(event,window);
         }
         
+        // Update typewriter current item
+        myTypeWriter.setString(welcomeMsgInfo[currItem]);
+        myTypeWriter.write();
+            
+        window.setTitle("Enemies: " + std::to_string(welcomeMsgInfo.size()) +
+                        " --------- Current Enemy: " + welcomeMsgData[currItem].name);
+        
+        
         // Clear the whole window before rendering a new frame
         window.clear();
+        // always draw the background grid.
+        window.draw(backgroundGrid);
+        
         
         // Test code for checking card display.
 //        for (auto it = spriteVector.begin(); it != spriteVector.end(); ++it)
@@ -367,7 +445,7 @@ int main()
             // The inital load screen
             // Draw the messeges and the playBtn
             window.draw(playBtn);
-            
+            window.draw(myTypeWriter);
             window.draw(welcomeMessage);
             window.draw(betDisplay1);
             window.draw(betDisplay2);
@@ -382,7 +460,6 @@ int main()
             if (isBetSubmitted == false)
             {
                 window.draw(submitBetBtn);
-//                    window.draw(submitBetButtonText);
                 window.draw(whiteChip);
                 window.draw(redChip);
                 window.draw(purpleChip);
@@ -391,9 +468,7 @@ int main()
             {
                 // Replace the submit bet button with these
                 window.draw(stayBtn);
-//                    window.draw(stayButtonText);
                 window.draw(hitBtn);
-//                    window.draw(hitButtonText);
                 window.draw(whiteChip);
                 window.draw(redChip);
                 window.draw(purpleChip);
@@ -410,7 +485,8 @@ int main()
             window.draw(*secondCard);
         }
         
-        map.invokeCallbacks(system, &window);
+        // the window resized callback
+        // map.invokeCallbacks(system, &window);
         
         // End the current frame and display its contents on screen.
         window.display();
