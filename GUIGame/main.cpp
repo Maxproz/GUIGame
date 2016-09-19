@@ -14,118 +14,75 @@
 #include <fstream>
 #include "RandomGenerators.hpp"
 #include "Deck.hpp"
+//#include <Thor/Animations.hpp> <--- busted?
+#include <Thor/Graphics.hpp>
+#include "opstruct.hpp"
+#include "button.hpp"
 
 // Blackjack random number generator for values (0 - 51)
 boost::mt19937 gen;
 
 
 
-sf::Sprite* getFirstCardSprite(const Deck& blackJackDeck, std::vector<sf::Sprite>& spriteVector, int index)
-{
-    sf::Sprite* cardSprite = new sf::Sprite;
-    
-    if (blackJackDeck._deck.at(index)._suit == SUITS::SUIT_CLUB)
-    {
-        switch (blackJackDeck._deck.at(index)._rank)
-        {
-            case RANKS::RANK_ACE: cardSprite = &spriteVector.at(0); break;
-            case RANKS::RANK_TWO: cardSprite = &spriteVector.at(1); break;
-            case RANKS::RANK_THREE: cardSprite = &spriteVector.at(2); break;
-            case RANKS::RANK_FOUR: cardSprite = &spriteVector.at(3); break;
-            case RANKS::RANK_FIVE: cardSprite = &spriteVector.at(4); break;
-            case RANKS::RANK_SIX: cardSprite = &spriteVector.at(5); break;
-            case RANKS::RANK_SEVEN: cardSprite = &spriteVector.at(6); break;
-            case RANKS::RANK_EIGHT: cardSprite = &spriteVector.at(7); break;
-            case RANKS::RANK_NINE: cardSprite = &spriteVector.at(8); break;
-            case RANKS::RANK_TEN: cardSprite = &spriteVector.at(9); break;
-            case RANKS::RANK_JACK: cardSprite = &spriteVector.at(10); break;
-            case RANKS::RANK_QUEEN: cardSprite = &spriteVector.at(11); break;
-            case RANKS::RANK_KING: cardSprite = &spriteVector.at(12); break;
-        }
-    }
-    
-    if (blackJackDeck._deck.at(index)._suit == SUITS::SUIT_SPADE)
-    {
-        switch (blackJackDeck._deck.at(index)._rank)
-        {
-            case RANKS::RANK_ACE: cardSprite = &spriteVector.at(13); break;
-            case RANKS::RANK_TWO: cardSprite = &spriteVector.at(14); break;
-            case RANKS::RANK_THREE: cardSprite = &spriteVector.at(15); break;
-            case RANKS::RANK_FOUR: cardSprite = &spriteVector.at(16); break;
-            case RANKS::RANK_FIVE: cardSprite = &spriteVector.at(17); break;
-            case RANKS::RANK_SIX: cardSprite = &spriteVector.at(18); break;
-            case RANKS::RANK_SEVEN: cardSprite = &spriteVector.at(19); break;
-            case RANKS::RANK_EIGHT: cardSprite = &spriteVector.at(20); break;
-            case RANKS::RANK_NINE: cardSprite = &spriteVector.at(21); break;
-            case RANKS::RANK_TEN: cardSprite = &spriteVector.at(22); break;
-            case RANKS::RANK_JACK: cardSprite = &spriteVector.at(23); break;
-            case RANKS::RANK_QUEEN: cardSprite = &spriteVector.at(24); break;
-            case RANKS::RANK_KING: cardSprite = &spriteVector.at(25); break;
-        }
-    }
 
-
-    if (blackJackDeck._deck.at(index)._suit == SUITS::SUIT_HEART)
-    {
-        switch (blackJackDeck._deck.at(index)._rank)
-        {
-            case RANKS::RANK_ACE: cardSprite = &spriteVector.at(26); break;
-            case RANKS::RANK_TWO: cardSprite = &spriteVector.at(27); break;
-            case RANKS::RANK_THREE: cardSprite = &spriteVector.at(28); break;
-            case RANKS::RANK_FOUR: cardSprite = &spriteVector.at(29); break;
-            case RANKS::RANK_FIVE: cardSprite = &spriteVector.at(30); break;
-            case RANKS::RANK_SIX: cardSprite = &spriteVector.at(31); break;
-            case RANKS::RANK_SEVEN: cardSprite = &spriteVector.at(32); break;
-            case RANKS::RANK_EIGHT: cardSprite = &spriteVector.at(33); break;
-            case RANKS::RANK_NINE: cardSprite = &spriteVector.at(34); break;
-            case RANKS::RANK_TEN: cardSprite = &spriteVector.at(35); break;
-            case RANKS::RANK_JACK: cardSprite = &spriteVector.at(36); break;
-            case RANKS::RANK_QUEEN: cardSprite = &spriteVector.at(37); break;
-            case RANKS::RANK_KING: cardSprite = &spriteVector.at(38); break;
-        }
-    }
-        
-    if (blackJackDeck._deck.at(index)._suit == SUITS::SUIT_DIAMOND)
-    {
-        switch (blackJackDeck._deck.at(index)._rank)
-        {
-            case RANKS::RANK_ACE: cardSprite = &spriteVector.at(39); break;
-            case RANKS::RANK_TWO: cardSprite = &spriteVector.at(40); break;
-            case RANKS::RANK_THREE: cardSprite = &spriteVector.at(41); break;
-            case RANKS::RANK_FOUR: cardSprite = &spriteVector.at(42); break;
-            case RANKS::RANK_FIVE: cardSprite = &spriteVector.at(43); break;
-            case RANKS::RANK_SIX: cardSprite = &spriteVector.at(44); break;
-            case RANKS::RANK_SEVEN: cardSprite = &spriteVector.at(45); break;
-            case RANKS::RANK_EIGHT: cardSprite = &spriteVector.at(46); break;
-            case RANKS::RANK_NINE: cardSprite = &spriteVector.at(47); break;
-            case RANKS::RANK_TEN: cardSprite = &spriteVector.at(48); break;
-            case RANKS::RANK_JACK: cardSprite = &spriteVector.at(49); break;
-            case RANKS::RANK_QUEEN: cardSprite = &spriteVector.at(50); break;
-            case RANKS::RANK_KING: cardSprite = &spriteVector.at(51); break;
-        }
-    }
-    cardSprite->scale(0.2, 0.2);
-    return cardSprite;
-}
-
-void printDeck(Deck& deck)
-{
-    for (int i = 0; i < 52; ++i)
-    {
-        std::cout << deck._deck[i] << std::endl;
-    }
-}
 
 // The default position of a transformable object is (0, 0).
 // The default rotation of a transformable object is 0.
 // The default scale of a transformable object is (1, 1).
 // for now, forget money and set the starting chips to 300
+
+// TODO: add a get value function and add the values together of my first 2 cards
+// - Then get the hit and stand buttons hooked up.
+
 int main()
 {
     Deck blackJackDeck;
 //    blackJackDeck.fillDeckWithCards();
 //    blackJackDeck.shuffleDeck();
-    printDeck(blackJackDeck);
+    blackJackDeck.printDeck();
+    
+    
+    // setup XML file tracking
+    BJ::opstruct op;
+    int vol, eff, diff;
+    
+// crashes the game first time if the file is not already in there.
+// probably want to do a save first with basic info.
+//    if (!op.loadOptions(op, "options.xml"))
+//    {
+//        std::cerr << "Could not load options." << std::endl;
+//        vol = 2;
+//        eff = 4;
+//        diff = 1;
+//    }
+    
+    vol = op._volume;
+    eff = op._effects;
+    diff = op._difficulty;
+    
+    std::cout << "Music volume: " << vol << "\n" << "Effects volume: " << eff << "\n" << "Difficulty: "
+                                                                        << diff << std::endl;
+    
+    std::cout << "Enter music volume: " << std::endl;
+    std::cin >> vol;
+    
+    std::cout << "Enter sound effects volume: " << std::endl;
+    std::cin >> eff;
+    
+    std::cout << "Enter difficulty level: " << std::endl;
+    std::cin >> diff;
+    
+    std::cout << "Music volume: " << vol << "\n" << "Effects volume: " << eff << "\n" << "Difficulty: "
+                                                                        << diff << std::endl;
+    
+    op._volume = vol;
+    op._effects = eff;
+    op._difficulty = diff;
+    
+    if (!op.saveOptions(op, "options.xml"))
+    {
+        std::cerr << "Could not save options." << std::endl;
+    }
     
     // seed the random number generator for the blackjack deck shuffle.
     gen.seed(static_cast<unsigned int>(std::time(0)));
@@ -187,7 +144,8 @@ int main()
 //    spriteVector.at(1).move(160, 0);
 //    spriteVector.at(2).move(480, 0);
 //    spriteVector.at(3).move(640, 0);
-//
+
+    
 //    // Potential hit cards.
 //    spriteVector.at(4).move(150, 250);
 //    spriteVector.at(5).move(250, 250);
@@ -250,13 +208,45 @@ int main()
     sf::Text welcomeMessage("Welcome to BlackJack.", font, 60);
     sf::Text betDisplay1("Your bet starts at 0.", font, 40);
     sf::Text betDisplay2("Press the Up Arrow to increase the bet by 10", font, 40);
-    sf::Text beginMessage("Press Enter to Begin playing.", font, 60);
+    sf::Text beginMessage("Click      to Begin playing.", font, 60);
     welcomeMessage.move(0, 0);
     betDisplay1.move(0, 90);
     betDisplay2.move(0, 130);
     beginMessage.move(0, 300);
     
+    // Try to setup updated Buttons
+    gui::button playBtn("Play!", font, sf::Vector2f(100.f,100.f), gui::style::save);
+    gui::button hitBtn("Hit", font, sf::Vector2f(100.f, 200.f), gui::style::clean); // changed from cancel
+    gui::button stayBtn("Stay", font, sf::Vector2f(300.f, 100.f), gui::style::clean);
+    gui::button submitBetBtn("Enter Bet", font, sf::Vector2f(300.f, 200.f), gui::style::none);
+    
+    playBtn.setPosition(sf::Vector2f(160.f,340.f));
 
+    
+    hitBtn.setPosition(sf::Vector2f(100.f,520.f));
+    hitBtn.setSize(42);
+    hitBtn.setBorderColor(sf::Color(255,255,255,255));
+    hitBtn.setBorderRadius(10.f);
+    hitBtn.setColorNormal(sf::Color::Red);
+    
+    stayBtn.setPosition(sf::Vector2f(250.f,520.f));
+    stayBtn.setSize(34);
+    stayBtn.setBorderColor(sf::Color(255,255,255,255));
+    stayBtn.setBorderRadius(10.f);
+    stayBtn.setColorNormal(sf::Color::Red);
+    
+    submitBetBtn.setBorderThickness(2.f);
+    submitBetBtn.setBorderRadius(20.f);
+    submitBetBtn.setBorderColor(sf::Color(255,255,255,255));
+    submitBetBtn.setColorNormal(sf::Color(200,0,200,255));
+    submitBetBtn.setColorHover(sf::Color(255,0,255,100));
+    submitBetBtn.setColorClicked(sf::Color(150,0,150,255));
+    submitBetBtn.setColorTextNormal(sf::Color(255,255,255,255));
+    submitBetBtn.setColorTextHover(sf::Color(255,255,0,255));
+    submitBetBtn.setColorTextClicked(sf::Color(255,0,0,255));
+    submitBetBtn.setPosition(sf::Vector2f(200.f,520.f));
+    submitBetBtn.setSize(50);
+    
     // Try to setup the Buttons for Hit/Stay
     sf::Texture texture3;
     if (!texture3.loadFromFile("/Users/maxdietz/Desktop/GUIGame/GUIGame/Buttons/Stay.png"))
@@ -279,7 +269,6 @@ int main()
     hitButtonText.setPosition(hitButton.getPosition());
     hitButtonText.move(20, 0);
     
-    
     // Setup a Submit Bet Button
     sf::Texture texture5;
     if (!texture5.loadFromFile("/Users/maxdietz/Desktop/GUIGame/GUIGame/Buttons/Submit.png"))
@@ -292,6 +281,8 @@ int main()
     submitBetButtonText.setPosition(submitBetButton.getPosition());
     submitBetButtonText.move(15, 5);
     submitBetButtonText.setFillColor(sf::Color::Blue);
+    
+    
     
     
     // big scoped variables
@@ -347,6 +338,14 @@ int main()
             }
         }
         
+        
+        
+        playBtn.update(event,window);
+        hitBtn.update(event,window);
+        stayBtn.update(event,window);
+        submitBetBtn.update(event,window);
+        
+        
         // Clear the whole window before rendering a new frame
         window.clear();
         
@@ -355,7 +354,10 @@ int main()
 //        {
 //            window.draw(*it);
 //        }
-
+        window.draw(playBtn);
+        window.draw(hitBtn);
+        window.draw(stayBtn);
+        window.draw(submitBetBtn);
         
         // Welcome screen is drawn first.
         if (isWelcomeScreen == true)

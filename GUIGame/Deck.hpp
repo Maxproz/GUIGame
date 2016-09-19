@@ -12,6 +12,8 @@
 #include <vector>
 #include "Card.hpp"
 #include "RandomGenerators.hpp"
+#include <SFML/Graphics.hpp>
+
 
 class Deck
 {
@@ -25,9 +27,10 @@ public:
     
     void shuffleDeck();
 //    void fillDeckWithCards();
+    void printDeck();
 };
 
 //std::vector<Card> fillDeckWithCards();
-
+sf::Sprite* getFirstCardSprite(const Deck& blackJackDeck, std::vector<sf::Sprite>& spriteVector, int index);
 
 #endif /* Deck_hpp */
