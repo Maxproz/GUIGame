@@ -33,4 +33,6 @@ public:
 //std::vector<Card> fillDeckWithCards();
 sf::Sprite* getFirstCardSprite(const Deck& blackJackDeck, std::vector<sf::Sprite>& spriteVector, int index);
 
+
+
 #endif /* Deck_hpp */

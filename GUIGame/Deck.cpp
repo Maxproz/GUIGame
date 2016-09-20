@@ -60,7 +60,7 @@ void Deck::shuffleDeck()
 {
     for (int i = 0; i < 52; ++i)
     {
-        std::swap(_deck.at(i), _deck.at(randomMersenne()));
+        std::swap(_deck[i], _deck[randomMersenne()]);
         isShuffeled = true;
     }
 }

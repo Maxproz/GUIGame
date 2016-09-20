@@ -22,6 +22,10 @@
 #include "DataTables.hpp"
 #include "Typewriter.hpp"
 #include "HexGrid.hpp"
+#include <thread>
+
+
+
 
 // Blackjack random number generator for values (0 - 51)
 boost::mt19937 gen;
@@ -63,14 +67,71 @@ boost::mt19937 gen;
 // for animation idea:
 // http://pushbuttonreceivecode.com/blog/simple-boss-example-using-sfml-and-thor
 
-//  Make my background the grid of polygons from the earlier code I compiledi bjarecode.
+
+int getCardValue(const Card& card, int& totalValueBefore)
+{
+    switch (card._rank)
+    {
+        case RANKS::RANK_TWO:		return 2;
+        case RANKS::RANK_THREE:		return 3;
+        case RANKS::RANK_FOUR:		return 4;
+        case RANKS::RANK_FIVE:		return 5;
+        case RANKS::RANK_SIX:		return 6;
+        case RANKS::RANK_SEVEN:		return 7;
+        case RANKS::RANK_EIGHT:		return 8;
+        case RANKS::RANK_NINE:		return 9;
+        case RANKS::RANK_TEN:		return 10;
+        case RANKS::RANK_JACK:		return 10;
+        case RANKS::RANK_QUEEN:	    return 10;
+        case RANKS::RANK_KING:		return 10;
+        case RANKS::RANK_ACE:
+        {
+            if ((totalValueBefore + 11) > 21)
+            {
+                return 1;
+            }
+            else
+            {
+                return 11;
+            }
+        }
+    }
+    
+    return 0;
+}
+
+
+
 int main()
 {
+    gen.seed(static_cast<unsigned int>(std::time(0)));
+    
     Deck blackJackDeck;
 //    blackJackDeck.fillDeckWithCards();
-//    blackJackDeck.shuffleDeck();
+    blackJackDeck.shuffleDeck();
     blackJackDeck.printDeck();
     
+    std::vector<Card>::iterator cardPtr = blackJackDeck._deck.begin();
+//    const Card* cardPtr = &blackJackDeck._deck[0];
+    std::cout << std::endl;
+    int playersTotal = 0;
+    int dealersTotal = 0;
+    
+    std::cout << *cardPtr << std::endl;
+    playersTotal += getCardValue((*cardPtr++), playersTotal);
+    std::cout << *cardPtr << std::endl;
+    playersTotal += getCardValue((*cardPtr++), playersTotal);
+    std::cout << "Player Cards Value: " << playersTotal << std::endl;
+    
+    
+    std::cout << *cardPtr << std::endl;
+    dealersTotal += getCardValue((*cardPtr++), dealersTotal);
+    
+    std::cout << *cardPtr << std::endl;
+    dealersTotal += getCardValue((*cardPtr++), dealersTotal);
+    std::cout << "Dealer Cards Value: " << dealersTotal << std::endl;
+
+
     
     // setup XML file tracking
     BJ::opstruct op;
@@ -99,7 +160,7 @@ int main()
     }
     
     // seed the random number generator for the blackjack deck shuffle.
-    gen.seed(static_cast<unsigned int>(std::time(0)));
+    
     
     sf::RenderWindow window(sf::VideoMode(800, 600), "SFML window");
     
@@ -224,6 +285,13 @@ int main()
         error("Unable to load font from file");
     sf::Text welcomeMessage("Welcome to the BlackJack table!.", font, 60);
     sf::Text beginMessage("Click      to Begin playing.", font, 60);
+    sf::Text loseMessage("YOU LOSE", font, 120);
+    sf::Text winMessage("YOU WIN", font, 120);
+    sf::Text pushMessage("PUSH - SAME SCORE", font, 120);
+    
+    pushMessage.move(300.f,300.f);
+    winMessage.move(300.f, 300.f);
+    loseMessage.move(300.f, 300.f);
     welcomeMessage.move(0, 0);
     beginMessage.move(0, 500.f);
     
@@ -236,14 +304,14 @@ int main()
     playBtn.setPosition(sf::Vector2f(160.f,550.f));
     playBtn.setColorNormal(sf::Color::Black);
     
-    hitBtn.setPosition(sf::Vector2f(100.f,520.f));
-    hitBtn.setSize(42);
+//    hitBtn.setPosition(sf::Vector2f(100.f,520.f));
+//    hitBtn.setSize(42);
     hitBtn.setBorderColor(sf::Color(255,255,255,255));
     hitBtn.setBorderRadius(10.f);
     hitBtn.setColorNormal(sf::Color::Red);
     
-    stayBtn.setPosition(sf::Vector2f(250.f,520.f));
-    stayBtn.setSize(34);
+//    stayBtn.setPosition(sf::Vector2f(250.f,520.f));
+//    stayBtn.setSize(34);
     stayBtn.setBorderColor(sf::Color(255,255,255,255));
     stayBtn.setBorderRadius(10.f);
     stayBtn.setColorNormal(sf::Color::Red);
@@ -257,8 +325,9 @@ int main()
     submitBetBtn.setColorTextNormal(sf::Color(255,255,255,255));
     submitBetBtn.setColorTextHover(sf::Color(255,255,0,255));
     submitBetBtn.setColorTextClicked(sf::Color(255,0,0,255));
-    submitBetBtn.setPosition(sf::Vector2f(200.f,520.f));
-    submitBetBtn.setSize(50);
+//    submitBetBtn.setPosition(sf::Vector2f(200.f,520.f));
+//    submitBetBtn.setSize(50);
+    
     
     
 //    // Maybe map some actions out later: reference areas below
@@ -289,6 +358,11 @@ int main()
     bool isWelcomeScreen = true;
     bool isBetSubmitted = false;
     bool hasReachedEndOfTutorial = false;
+    bool isDealersTurn = false;
+    bool playerWins = false;
+    bool playerLoses = false;
+    bool isPush = false;
+    int hitCounter = 0;
     
     sf::Sprite* firstCard = getFirstCardSprite(blackJackDeck, spriteVector, 0);
     sf::Sprite* secondCard = getFirstCardSprite(blackJackDeck, spriteVector, 1);
@@ -350,7 +424,7 @@ int main()
     if (!myFont.loadFromFile("/MP/cont.ttf"))
         std::cerr << "Could not load font cont.ttf" << std::endl;
     
-    Typewriter myTypeWriter("empty", myFont, 32, .05f);
+    Typewriter myTypeWriter("empty", myFont, 32, .01f);
     myTypeWriter.setPosition(sf::Vector2f(400.f, 200.f));
     
     
@@ -422,10 +496,13 @@ int main()
                         break;
                 }
             }
+            
             // Welcome screen is drawn first.
             // TODO: make a check for the bet being greater than 0 before executing this code.
             if (isWelcomeScreen && playBtn.getState() == gui::state::clicked)
             {
+                submitBetBtn.setPosition(sf::Vector2f(200.f,520.f));
+                submitBetBtn.setSize(50);
                 // Need to increase the bet from Player class or subtract chip total
                 isWelcomeScreen = false;
             }
@@ -433,6 +510,11 @@ int main()
             
             if (submitBetBtn.getState() == gui::state::clicked)
             {
+                    stayBtn.setPosition(sf::Vector2f(250.f,520.f));
+                    stayBtn.setSize(34);
+                    hitBtn.setPosition(sf::Vector2f(100.f,520.f));
+                    hitBtn.setSize(42);
+
                 
                 isBetSubmitted = true;
                /*
@@ -440,14 +522,136 @@ int main()
                */
             }
             
+            if (stayBtn.getState() == gui::state::clicked)
+            {
+                isDealersTurn = true;
+            }
+            
+            if (hitBtn.getState() == gui::state::clicked)
+            {
+                hitCounter += 1;
+                if (hitCounter == 5)
+                {
+                    
+                    playersTotal += getCardValue((*cardPtr++), playersTotal);
+                    std::cout << "Hit Requested, new total: " << playersTotal << std::endl;
+                }
+                
+                if (hitCounter == 4)
+                {
+                    
+                    playersTotal += getCardValue((*cardPtr++), playersTotal);
+                    std::cout << "Hit Requested, new total: " << playersTotal << std::endl;
+                }
+                
+                if (hitCounter == 3)
+                {
+                   
+                    playersTotal += getCardValue((*cardPtr++), playersTotal);
+                    std::cout << "Hit Requested, new total: " << playersTotal << std::endl;
+                }
+                
+                if (hitCounter == 2)
+                {
+                  
+                    playersTotal += getCardValue((*cardPtr++), playersTotal);
+                    std::cout << "Hit Requested, new total: " << playersTotal << std::endl;
+                }
+                
+                if (hitCounter == 1)
+                {
+          
+                    playersTotal += getCardValue((*cardPtr++), playersTotal);
+                    std::cout << "Hit Requested, new total: " << playersTotal << std::endl;
+                }
+            }
+            
+
+            
             // Code for updating the events of my buttons
             playBtn.update(event,window);
             hitBtn.update(event,window);
             stayBtn.update(event,window);
             submitBetBtn.update(event,window);
+            
+            if (dealersTotal < 17 && isDealersTurn == true)
+            {
+                hitCounter += 1;
+                if (hitCounter == 5)
+                {
+                    
+                    HitCard5->move(280, 0);
+                    dealersTotal += getCardValue((*cardPtr++), dealersTotal);
+                    std::cout << "Hit Requested, new total: " << dealersTotal << std::endl;
+
+                }
+                
+                if (hitCounter == 4)
+                {
+                    
+                    HitCard4->move(260, 0);
+                    dealersTotal += getCardValue((*cardPtr++), dealersTotal);
+                    std::cout << "Hit Requested, new total: " << dealersTotal << std::endl;
+  
+                }
+                
+                if (hitCounter == 3)
+                {
+                    
+                    HitCard3->move(240, 0);
+                    dealersTotal += getCardValue((*cardPtr++), dealersTotal);
+                    std::cout << "Hit Requested, new total: " << dealersTotal << std::endl;
+   
+                }
+                
+                if (hitCounter == 2)
+                {
+                    
+                    HitCard2->move(220, 0);
+                    dealersTotal += getCardValue((*cardPtr++), dealersTotal);
+                    std::cout << "Hit Requested, new total: " << dealersTotal << std::endl;
+
+                }
+                
+                if (hitCounter == 1)
+                {
+                    HitCard1->move(200, 0);
+                    dealersTotal += getCardValue((*cardPtr++), dealersTotal);
+                    std::cout << "Hit Requested, new total: " << dealersTotal << std::endl;
+                    
+                }
+            }
         }
         // POLL EVENT ENDS HERE
         
+
+        
+        if (dealersTotal > 21)
+        {
+            playerWins = true;
+        }
+        
+        if (playersTotal > 21)
+        {
+            playerLoses = true;
+        }
+        
+        if (dealersTotal >= 17 && dealersTotal <= 21 && isDealersTurn == true)
+        {
+            if (dealersTotal > playersTotal)
+            {
+                playerLoses = true;
+                
+            }
+            else if (dealersTotal < playersTotal)
+            {
+                playerWins = true;
+            }
+            else
+            {
+                isPush = true;
+            }
+        }
         
         // Update typewriter current item
         myTypeWriter.setString(welcomeMsgInfo[currItem]);
@@ -459,15 +663,50 @@ int main()
         
         // Clear the whole window before rendering a new frame
         window.clear();
+        
         // always draw the background grid.
         window.draw(backgroundGrid);
         
+
+        if (hitCounter == 5)
+        {
+            window.draw(*HitCard1);
+            window.draw(*HitCard2);
+            window.draw(*HitCard3);
+            window.draw(*HitCard4);
+            window.draw(*HitCard5);
+            
+        }
+        
+        if (hitCounter == 4)
+        {
+            window.draw(*HitCard1);
+            window.draw(*HitCard2);
+            window.draw(*HitCard3);
+            window.draw(*HitCard4);
+            
+        }
+        
+        if (hitCounter == 3)
+        {
+            window.draw(*HitCard1);
+            window.draw(*HitCard2);
+            window.draw(*HitCard3);
+            
+        }
+        
+        if (hitCounter == 2)
+        {
+            window.draw(*HitCard1);
+            window.draw(*HitCard2);
+        }
+        if (hitCounter == 1)
+        {
+            window.draw(*HitCard1);
+        }
+        
+        
         // need to setup the logic for these draws.
-        window.draw(*HitCard1);
-        window.draw(*HitCard2);
-        window.draw(*HitCard3);
-        window.draw(*HitCard4);
-        window.draw(*HitCard5);
         
         
         if (isWelcomeScreen == true)
@@ -485,14 +724,12 @@ int main()
             
             window.draw(myTypeWriter);
             window.draw(welcomeMessage);
-            
-            
         }
         
         // Then the Submit bet button and chips appear until the player submits the bet.
         // - after submitting the chips will stay on screen and the submit bet button will be
         // replaced by the hit and stay buttons.
-        if (hasStartingChips == true && isWelcomeScreen == false)
+        if (hasStartingChips == true && isWelcomeScreen == false && isDealersTurn == false)
         {
             if (isBetSubmitted == false)
             {
@@ -520,17 +757,83 @@ int main()
 
             window.draw(*firstCard);
             window.draw(*secondCard);
-            window.draw(cardBack);
             // card back displays until player presses stay.
-//            window.draw(*dealerFirstCard);
+            
             window.draw(*dealerSecondCard);
+            if (isDealersTurn == false)
+                window.draw(cardBack);
         }
         
-        // the window resized callback
+        // its the dealers turn if the player selects "stay" and they havent busted
+        if (isDealersTurn == true)
+        {
+            // show the hidden card
+            window.draw(*dealerFirstCard);
+        }
+            
+        if (playerWins == true)
+        {
+            window.draw(winMessage);
+        }
+        if (playerLoses == true)
+        {
+            window.draw(loseMessage);
+        }
+        if (isPush == true)
+        {
+            window.draw(pushMessage);
+        }
+        
+        
+
+        
+        // the window resized callback <-- probably wont use
         // map.invokeCallbacks(system, &window);
         
         // End the current frame and display its contents on screen.
         window.display();
+        
+        
+        
+        if (dealersTotal > 21)
+        {
+            playerWins = true;
+            sleep(4);
+            std::cout << "You win, dealer is over 21" << std::endl;
+            window.close();
+        }
+        
+        if (playersTotal > 21)
+        {
+            playerLoses = true;
+            sleep(4);
+            std::cout << "You lose, you went over 21" << std::endl;
+            window.close();
+        }
+        
+        if (dealersTotal >= 17 && dealersTotal <= 21 && isDealersTurn == true)
+        {
+            if (dealersTotal > playersTotal)
+            {
+                playerLoses = true;
+                sleep(4);
+                std::cout << "You lose, dealer has a higher score!" << std::endl;
+                window.close();
+            }
+            else if (dealersTotal < playersTotal)
+            {
+                playerWins = true;
+                sleep(4);
+                std::cout << "You win, dealer has a lower score!" << std::endl;
+                window.close();
+            }
+            else
+            {
+                isPush = true;
+                sleep(4);
+                std::cout << "You push, same score!" << std::endl;
+                window.close();
+            }
+        }
     }
-    
 }
