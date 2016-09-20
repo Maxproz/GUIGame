@@ -285,13 +285,11 @@ int main()
         error("Unable to load font from file");
     sf::Text welcomeMessage("Welcome to the BlackJack table!.", font, 60);
     sf::Text beginMessage("Click      to Begin playing.", font, 60);
-    sf::Text loseMessage("YOU LOSE", font, 120);
-    sf::Text winMessage("YOU WIN", font, 120);
-    sf::Text pushMessage("PUSH - SAME SCORE", font, 120);
+    sf::Text loseMessage("YOU LOSE", font, 80);
+    sf::Text winMessage("YOU WIN", font, 80);
     
-    pushMessage.move(300.f,300.f);
-    winMessage.move(300.f, 300.f);
-    loseMessage.move(300.f, 300.f);
+    loseMessage.move(400, 300);
+    loseMessage.move(400, 300);
     welcomeMessage.move(0, 0);
     beginMessage.move(0, 500.f);
     
@@ -359,9 +357,6 @@ int main()
     bool isBetSubmitted = false;
     bool hasReachedEndOfTutorial = false;
     bool isDealersTurn = false;
-    bool playerWins = false;
-    bool playerLoses = false;
-    bool isPush = false;
     int hitCounter = 0;
     
     sf::Sprite* firstCard = getFirstCardSprite(blackJackDeck, spriteVector, 0);
@@ -532,126 +527,43 @@ int main()
                 hitCounter += 1;
                 if (hitCounter == 5)
                 {
-                    
                     playersTotal += getCardValue((*cardPtr++), playersTotal);
                     std::cout << "Hit Requested, new total: " << playersTotal << std::endl;
                 }
                 
                 if (hitCounter == 4)
                 {
-                    
                     playersTotal += getCardValue((*cardPtr++), playersTotal);
                     std::cout << "Hit Requested, new total: " << playersTotal << std::endl;
                 }
                 
                 if (hitCounter == 3)
                 {
-                   
                     playersTotal += getCardValue((*cardPtr++), playersTotal);
                     std::cout << "Hit Requested, new total: " << playersTotal << std::endl;
                 }
                 
                 if (hitCounter == 2)
                 {
-                  
                     playersTotal += getCardValue((*cardPtr++), playersTotal);
                     std::cout << "Hit Requested, new total: " << playersTotal << std::endl;
                 }
                 
                 if (hitCounter == 1)
                 {
-          
                     playersTotal += getCardValue((*cardPtr++), playersTotal);
                     std::cout << "Hit Requested, new total: " << playersTotal << std::endl;
                 }
             }
-            
-
             
             // Code for updating the events of my buttons
             playBtn.update(event,window);
             hitBtn.update(event,window);
             stayBtn.update(event,window);
             submitBetBtn.update(event,window);
-            
-            if (dealersTotal < 17 && isDealersTurn == true)
-            {
-                hitCounter += 1;
-                if (hitCounter == 5)
-                {
-                    
-                    HitCard5->move(280, 0);
-                    dealersTotal += getCardValue((*cardPtr++), dealersTotal);
-                    std::cout << "Hit Requested, new total: " << dealersTotal << std::endl;
-
-                }
-                
-                if (hitCounter == 4)
-                {
-                    
-                    HitCard4->move(260, 0);
-                    dealersTotal += getCardValue((*cardPtr++), dealersTotal);
-                    std::cout << "Hit Requested, new total: " << dealersTotal << std::endl;
-  
-                }
-                
-                if (hitCounter == 3)
-                {
-                    
-                    HitCard3->move(240, 0);
-                    dealersTotal += getCardValue((*cardPtr++), dealersTotal);
-                    std::cout << "Hit Requested, new total: " << dealersTotal << std::endl;
-   
-                }
-                
-                if (hitCounter == 2)
-                {
-                    
-                    HitCard2->move(220, 0);
-                    dealersTotal += getCardValue((*cardPtr++), dealersTotal);
-                    std::cout << "Hit Requested, new total: " << dealersTotal << std::endl;
-
-                }
-                
-                if (hitCounter == 1)
-                {
-                    HitCard1->move(200, 0);
-                    dealersTotal += getCardValue((*cardPtr++), dealersTotal);
-                    std::cout << "Hit Requested, new total: " << dealersTotal << std::endl;
-                    
-                }
-            }
         }
         // POLL EVENT ENDS HERE
         
-
-        
-        if (dealersTotal > 21)
-        {
-            playerWins = true;
-        }
-        
-        if (playersTotal > 21)
-        {
-            playerLoses = true;
-        }
-        
-        if (dealersTotal >= 17 && dealersTotal <= 21 && isDealersTurn == true)
-        {
-            if (dealersTotal > playersTotal)
-            {
-                playerLoses = true;
-                
-            }
-            else if (dealersTotal < playersTotal)
-            {
-                playerWins = true;
-            }
-            else
-            {
-                isPush = true;
-            }
-        }
         
         // Update typewriter current item
         myTypeWriter.setString(welcomeMsgInfo[currItem]);
@@ -667,7 +579,6 @@ int main()
         // always draw the background grid.
         window.draw(backgroundGrid);
         
-
         if (hitCounter == 5)
         {
             window.draw(*HitCard1);
@@ -675,7 +586,6 @@ int main()
             window.draw(*HitCard3);
             window.draw(*HitCard4);
             window.draw(*HitCard5);
-            
         }
         
         if (hitCounter == 4)
@@ -684,7 +594,6 @@ int main()
             window.draw(*HitCard2);
             window.draw(*HitCard3);
             window.draw(*HitCard4);
-            
         }
         
         if (hitCounter == 3)
@@ -692,20 +601,21 @@ int main()
             window.draw(*HitCard1);
             window.draw(*HitCard2);
             window.draw(*HitCard3);
-            
         }
         
         if (hitCounter == 2)
         {
             window.draw(*HitCard1);
             window.draw(*HitCard2);
+
         }
+        
         if (hitCounter == 1)
         {
             window.draw(*HitCard1);
         }
         
-        
+
         // need to setup the logic for these draws.
         
         
@@ -771,21 +681,7 @@ int main()
             window.draw(*dealerFirstCard);
         }
             
-        if (playerWins == true)
-        {
-            window.draw(winMessage);
-        }
-        if (playerLoses == true)
-        {
-            window.draw(loseMessage);
-        }
-        if (isPush == true)
-        {
-            window.draw(pushMessage);
-        }
         
-        
-
         
         // the window resized callback <-- probably wont use
         // map.invokeCallbacks(system, &window);
@@ -793,47 +689,71 @@ int main()
         // End the current frame and display its contents on screen.
         window.display();
         
-        
-        
-        if (dealersTotal > 21)
+        if (dealersTotal < 17 && isDealersTurn == true)
         {
-            playerWins = true;
-            sleep(4);
-            std::cout << "You win, dealer is over 21" << std::endl;
-            window.close();
+            hitCounter += 1;
+            if (hitCounter == 5)
+            {
+                sleep(1);
+                HitCard5->move(280, 0);
+                dealersTotal += getCardValue((*cardPtr++), dealersTotal);
+                std::cout << "Hit Requested, new total: " << dealersTotal << std::endl;
+            }
+            
+            if (hitCounter == 4)
+            {
+                sleep(1);
+                HitCard4->move(260, 0);
+                dealersTotal += getCardValue((*cardPtr++), dealersTotal);
+                std::cout << "Hit Requested, new total: " << dealersTotal << std::endl;
+            }
+            
+            if (hitCounter == 3)
+            {
+                sleep(1);
+                HitCard3->move(240, 0);
+                dealersTotal += getCardValue((*cardPtr++), dealersTotal);
+                std::cout << "Hit Requested, new total: " << dealersTotal << std::endl;
+            }
+            
+            if (hitCounter == 2)
+            {
+                sleep(1);
+                HitCard2->move(220, 0);
+                dealersTotal += getCardValue((*cardPtr++), dealersTotal);
+                std::cout << "Hit Requested, new total: " << dealersTotal << std::endl;
+            }
+            
+            if (hitCounter == 1)
+            {
+                sleep(1);
+                HitCard1->move(200, 0);
+                dealersTotal += getCardValue((*cardPtr++), dealersTotal);
+                std::cout << "Hit Requested, new total: " << dealersTotal << std::endl;
+            }
         }
+        
+        // need to find a way to manipulate a time class to wait for a certain amount of seconds
+        // - before displaying the winner.
+        
+        // sleeping here does not work, and its a shitty solution anyway.
+        
         
         if (playersTotal > 21)
         {
-            playerLoses = true;
-            sleep(4);
-            std::cout << "You lose, you went over 21" << std::endl;
+            // display a lose message
+            
+
+            std::cout << "You lose, over 21" << std::endl;
+            sleep(2);
             window.close();
         }
-        
-        if (dealersTotal >= 17 && dealersTotal <= 21 && isDealersTurn == true)
-        {
-            if (dealersTotal > playersTotal)
-            {
-                playerLoses = true;
-                sleep(4);
-                std::cout << "You lose, dealer has a higher score!" << std::endl;
-                window.close();
-            }
-            else if (dealersTotal < playersTotal)
-            {
-                playerWins = true;
-                sleep(4);
-                std::cout << "You win, dealer has a lower score!" << std::endl;
-                window.close();
-            }
-            else
-            {
-                isPush = true;
-                sleep(4);
-                std::cout << "You push, same score!" << std::endl;
-                window.close();
-            }
-        }
+//        if (dealersTotal > 21)
+//        {
+////            sleep(2);
+//            std::cout << "You win, dealer is over 21" << std::endl;
+//            window.close();
+//        }
     }
+    
 }
