@@ -426,9 +426,17 @@ int main()
     // typewriter works, try to setup background grid
     mpbgs::hexgrid backgroundGrid(window, mpbgs::hexgrid::hexStyle::colorful, 0.90f);
     
+    
+    sf::Clock clock;
     // Program loop
     while(window.isOpen())
     {
+        sf::Time totalElapsedTime = clock.getElapsedTime();
+        sf::Time oneSecond = sf::seconds(1.f);
+        sf::Time twoSeconds = sf::seconds(2.f);
+        
+        std::cout << totalElapsedTime.asSeconds() << std::endl;
+//        clock.restart();
 //        map.update(window);
 //        
 //        if (map.isActive(Quit))
@@ -691,6 +699,8 @@ int main()
         
         if (dealersTotal < 17 && isDealersTurn == true)
         {
+
+            
             hitCounter += 1;
             if (hitCounter == 5)
             {
@@ -745,15 +755,14 @@ int main()
             
 
             std::cout << "You lose, over 21" << std::endl;
-            sleep(2);
             window.close();
         }
-//        if (dealersTotal > 21)
-//        {
-////            sleep(2);
-//            std::cout << "You win, dealer is over 21" << std::endl;
-//            window.close();
-//        }
+        if (dealersTotal > 21)
+        {
+            
+            
+            std::cout << "You win, dealer busts!" << std::endl;
+            window.close();
+        }
     }
-    
 }
