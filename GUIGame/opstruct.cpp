@@ -29,6 +29,7 @@ bool BJ::opstruct::saveOptions(BJ::opstruct& op, const char* filename)
 bool BJ::opstruct::loadOptions(BJ::opstruct& op, const char* filename)
 {
     std::ifstream ifs(filename);
+    if (!ifs) return false;
     boost::archive::xml_iarchive xml(ifs);
     xml >> boost::serialization::make_nvp("Options", op);
     return true;

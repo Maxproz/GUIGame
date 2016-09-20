@@ -28,7 +28,7 @@ namespace BJ
         
         int _volume;
         int _effects;
-        int _difficulty;
+//        int _difficulty;
         
         friend class boost::serialization::access;
         template<class Archive>
@@ -36,7 +36,7 @@ namespace BJ
         {
             ar& BOOST_SERIALIZATION_NVP(_volume);
             ar& BOOST_SERIALIZATION_NVP(_effects);
-            ar& BOOST_SERIALIZATION_NVP(_difficulty);
+//            ar& BOOST_SERIALIZATION_NVP(_difficulty);
         }
     };
     

@@ -26,33 +26,33 @@
 // Blackjack random number generator for values (0 - 51)
 boost::mt19937 gen;
 
-// Enumeration for user-defined actions
-enum MyAction
-{
-    Location,
-    Quit,
-    Resize,
-};
-
-
-void onLocation(thor::ActionContext<MyAction> context)
-{
-    // context.Window is a pointer to the sf::Window passed to the thor::ActionMap constructor. It can
-    // be used for mouse input relative to a window, as follows:
-    sf::Vector2i mousePosition = sf::Mouse::getPosition(*context.window);
-    std::cout << "Location: " << thor::toString(mousePosition) << std::endl;
-}
-
-void onResize(thor::ActionContext<MyAction> context)
-{
-    // The sf::Event member variable called type has always the value
-    // - sf::Event::Resized, as specified in the thor::Action constructor.
-    // Since the Resize action has been triggered by an sf::Event
-    // - (and not by a sf::Keyboard, sf::Mouse or sf::Joystick),
-    // - we can also be sure that context.event is no null pointer.
-    sf::Event event = *context.event;
-    std::cout << "Resized!   New size = (" << event.size.width << ", " << event.size.height << ")" << std::endl;
-}
+//// Enumeration for user-defined actions
+//enum MyAction
+//{
+//    Location,
+//    Quit,
+//    Resize,
+//};
+//
+//
+//void onLocation(thor::ActionContext<MyAction> context)
+//{
+//    // context.Window is a pointer to the sf::Window passed to the thor::ActionMap constructor. It can
+//    // be used for mouse input relative to a window, as follows:
+//    sf::Vector2i mousePosition = sf::Mouse::getPosition(*context.window);
+//    std::cout << "Location: " << thor::toString(mousePosition) << std::endl;
+//}
+//
+//void onResize(thor::ActionContext<MyAction> context)
+//{
+//    // The sf::Event member variable called type has always the value
+//    // - sf::Event::Resized, as specified in the thor::Action constructor.
+//    // Since the Resize action has been triggered by an sf::Event
+//    // - (and not by a sf::Keyboard, sf::Mouse or sf::Joystick),
+//    // - we can also be sure that context.event is no null pointer.
+//    sf::Event event = *context.event;
+//    std::cout << "Resized!   New size = (" << event.size.width << ", " << event.size.height << ")" << std::endl;
+//}
 
 // The default position of a transformable object is (0, 0).
 // The default rotation of a transformable object is 0.
@@ -74,40 +74,24 @@ int main()
     
     // setup XML file tracking
     BJ::opstruct op;
-    int vol, eff, diff;
-    
-// crashes the game first time if the file is not already in there.
-// probably want to do a save first with basic info. <-- clean this code out, come up with a good solution
-//    if (!op.loadOptions(op, "options.xml"))
-//    {
-//        std::cerr << "Could not load options." << std::endl;
-//        vol = 2;
-//        eff = 4;
-//        diff = 1;
-//    }
-    
-    vol = op._volume;
-    eff = op._effects;
-    diff = op._difficulty;
-    
-    std::cout << "Music volume: " << vol << "\n" << "Effects volume: " << eff << "\n" << "Difficulty: "
-                                                                        << diff << std::endl;
-    
-    std::cout << "Enter music volume: " << std::endl;
-    std::cin >> vol;
-    
-    std::cout << "Enter sound effects volume: " << std::endl;
-    std::cin >> eff;
-    
-    std::cout << "Enter difficulty level: " << std::endl;
-    std::cin >> diff;
-    
-    std::cout << "Music volume: " << vol << "\n" << "Effects volume: " << eff << "\n" << "Difficulty: "
-                                                                        << diff << std::endl;
-    
-    op._volume = vol;
-    op._effects = eff;
-    op._difficulty = diff;
+    int vol;
+    int eff;
+
+    // If we can't load the options file it's their first time playing.
+    if (!op.loadOptions(op, "options.xml"))
+    {
+        std::cerr << "Sound options not loaded." << std::endl;
+        std::cout << "Music volume: " << vol << "\n" << "Effects volume: " << eff << std::endl;
+        std::cout << "Enter music volume: " << std::endl;
+        std::cin >> vol;
+        std::cout << "Enter sound effects volume: " << std::endl;
+        std::cin >> eff;
+        op._volume = vol;
+        op._effects = eff;
+        vol = op._volume;
+        eff = op._effects;
+        std::cout << "Music volume: " << vol << "\n" << "Effects volume: " << eff << std::endl;
+    }
     
     if (!op.saveOptions(op, "options.xml"))
     {
@@ -201,6 +185,8 @@ int main()
     if (!chipFilePurple.loadFromFile("/Users/maxdietz/Desktop/GUIGame/GUIGame/Chips/chipPurple.png"))
         error("Unable to load purple chip");
     
+
+    
     sf::Sprite whiteChip;
     whiteChip.setTexture(chipFileWhite);
     sf::Sprite redChip;
@@ -236,20 +222,16 @@ int main()
     sf::Font font;
     if (!font.loadFromFile("/Users/maxdietz/Desktop/GUIGame/GUIGame/Fonts/Kyoto.ttf"))
         error("Unable to load font from file");
-    sf::Text welcomeMessage("Welcome to BlackJack.", font, 60);
-    sf::Text betDisplay1("Your bet starts at 0.", font, 40);
-    sf::Text betDisplay2("Press the Up Arrow to increase the bet by 10", font, 40);
+    sf::Text welcomeMessage("Welcome to the BlackJack table!.", font, 60);
     sf::Text beginMessage("Click      to Begin playing.", font, 60);
     welcomeMessage.move(0, 0);
-    betDisplay1.move(0, 90);
-    betDisplay2.move(0, 130);
     beginMessage.move(0, 500.f);
     
     // Try to setup updated Buttons
     gui::button playBtn("Play!", font, sf::Vector2f(100.f,100.f), gui::style::save);
     gui::button hitBtn("Hit", font, sf::Vector2f(100.f, 200.f), gui::style::clean); // changed from cancel
     gui::button stayBtn("Stay", font, sf::Vector2f(300.f, 100.f), gui::style::clean);
-    gui::button submitBetBtn("Enter Bet", font, sf::Vector2f(300.f, 200.f), gui::style::none);
+    gui::button submitBetBtn("Submit Bet", font, sf::Vector2f(300.f, 200.f), gui::style::none);
     
     playBtn.setPosition(sf::Vector2f(160.f,550.f));
     playBtn.setColorNormal(sf::Color::Black);
@@ -279,45 +261,83 @@ int main()
     submitBetBtn.setSize(50);
     
     
-    // Maybe map some actions out later: reference areas below
-    // https://github.com/Bromeon/Thor/blob/master/examples/Action.cpp
-    // http://www.bromeon.ch/libraries/thor/tutorials/v2.0/actions.html
-    thor::Action leftClickedOnce(sf::Mouse::Left, thor::Action::PressOnce);
-    thor::Action rightClickedOnce(sf::Mouse::Right, thor::Action::PressOnce);
-    thor::Action leftOrRightClickOnce = leftClickedOnce || rightClickedOnce;
-    thor::Action resizeTheWindow = thor::Action(sf::Event::Resized);
-    thor::Action quitTheGame = // Quit: Release the escape key or click the [X] (single events)
-    thor::Action(sf::Keyboard::Escape, thor::Action::ReleaseOnce) || thor::Action(sf::Event::Closed);
-    
-    // Setup mouse cord and resize actions with map
-    // Create thor::EventSystem to connect Resize and Shoot actions with callbacks
-    // Use connect0() instead of connect() when callback has no parameter
-    
-    thor::ActionMap<MyAction> map;
-    map[Location] = (leftClickedOnce || rightClickedOnce);
-    map[Resize] = resizeTheWindow;
-    map[Quit] = quitTheGame;
-    
-    thor::ActionMap<MyAction>::CallbackSystem system;
-    system.connect(Location, &onLocation);
-    system.connect(Resize, &onResize);
+//    // Maybe map some actions out later: reference areas below
+//    // https://github.com/Bromeon/Thor/blob/master/examples/Action.cpp
+//    // http://www.bromeon.ch/libraries/thor/tutorials/v2.0/actions.html
+//    thor::Action leftClickedOnce(sf::Mouse::Left, thor::Action::PressOnce);
+//    thor::Action rightClickedOnce(sf::Mouse::Right, thor::Action::PressOnce);
+//    thor::Action leftOrRightClickOnce = leftClickedOnce || rightClickedOnce;
+//    thor::Action resizeTheWindow = thor::Action(sf::Event::Resized);
+//    thor::Action quitTheGame = // Quit: Release the escape key or click the [X] (single events)
+//    thor::Action(sf::Keyboard::Escape, thor::Action::ReleaseOnce) || thor::Action(sf::Event::Closed);
+//    
+//    // Setup mouse cord and resize actions with map
+//    // Create thor::EventSystem to connect Resize and Shoot actions with callbacks
+//    // Use connect0() instead of connect() when callback has no parameter
+//    
+//    thor::ActionMap<MyAction> map;
+//    map[Location] = (leftClickedOnce || rightClickedOnce);
+//    map[Resize] = resizeTheWindow;
+//    map[Quit] = quitTheGame;
+//    
+//    thor::ActionMap<MyAction>::CallbackSystem system;
+//    system.connect(Location, &onLocation);
+//    system.connect(Resize, &onResize);
     
     // big scoped variables
     bool hasStartingChips = true; // Player starts with Chips, need better idea for this chip tracking later.
     bool isWelcomeScreen = true;
     bool isBetSubmitted = false;
+    bool hasReachedEndOfTutorial = false;
     
     sf::Sprite* firstCard = getFirstCardSprite(blackJackDeck, spriteVector, 0);
     sf::Sprite* secondCard = getFirstCardSprite(blackJackDeck, spriteVector, 1);
     secondCard->move(160, 0);
     
     
+    // setup the dealers card positions and the dealers hidden card.
+    sf::Texture cardBackTexture;
+    if (!cardBackTexture.loadFromFile("/MP/cardback.png"))
+        error("Unable to load cardbacktexture.");
+    sf::Sprite cardBack;
+    cardBack.setTexture(cardBackTexture);
+    
+    
+    
+    sf::Sprite* dealerFirstCard = getFirstCardSprite(blackJackDeck, spriteVector, 2);
+    dealerFirstCard->move(485.f, 0.f);
+    
+    cardBack.scale(1.12f, 1.12f);
+    cardBack.move(488.f,-12.f);
+    
+    sf::Sprite* dealerSecondCard = getFirstCardSprite(blackJackDeck, spriteVector, 3);
+    dealerSecondCard->move(645.f, 0.f);
+    
+    sf::Sprite* HitCard1 = getFirstCardSprite(blackJackDeck, spriteVector, 4);
+    HitCard1->scale(0.7, 0.7);
+    HitCard1->move(200, 270);
+    
+    sf::Sprite* HitCard2 = getFirstCardSprite(blackJackDeck, spriteVector, 5);
+    HitCard2->scale(0.7, 0.7);
+    HitCard2->move(220, 270);
+    
+    sf::Sprite* HitCard3 = getFirstCardSprite(blackJackDeck, spriteVector, 6);
+    HitCard3->scale(0.7, 0.7);
+    HitCard3->move(240, 270);
+    
+    sf::Sprite* HitCard4 = getFirstCardSprite(blackJackDeck, spriteVector, 7);
+    HitCard4->scale(0.7, 0.7);
+    HitCard4->move(260, 270);
+    
+    sf::Sprite* HitCard5 = getFirstCardSprite(blackJackDeck, spriteVector, 8);
+    HitCard5->scale(0.7, 0.7);
+    HitCard5->move(280, 270);
+    
     // setup typewriter to replace the inital welcome messages.
     std::vector<WelcomeScreenMessages> welcomeMsgData = initalizeEnemyProfileData();
     
     std::map<sf::Uint32, std::string> welcomeMsgInfo;
     welcomeMsgInfo[0] = welcomeMsgData[0].name + "\n\n" + welcomeMsgData[0].description;
-    
     welcomeMsgInfo[1] = welcomeMsgData[1].name + "\n\n" + welcomeMsgData[1].description;
     welcomeMsgInfo[2] = welcomeMsgData[2].name + "\n\n" + welcomeMsgData[2].description;
     welcomeMsgInfo[3] = welcomeMsgData[3].name + "\n\n" + welcomeMsgData[3].description;
@@ -336,8 +356,6 @@ int main()
     
     // typewriter works, try to setup background grid
     mpbgs::hexgrid backgroundGrid(window, mpbgs::hexgrid::hexStyle::colorful, 0.90f);
-    
-    
     
     // Program loop
     while(window.isOpen())
@@ -390,6 +408,16 @@ int main()
                     }
                     break;
                         
+                    case sf::Keyboard::Return:
+                    {
+                        if (currItem >= maxIter)
+                            currItem = maxIter;
+                        else
+                            currItem++;
+                        
+                        myTypeWriter.reset();
+                    }
+                    
                     default:
                         break;
                 }
@@ -418,13 +446,15 @@ int main()
             stayBtn.update(event,window);
             submitBetBtn.update(event,window);
         }
+        // POLL EVENT ENDS HERE
+        
         
         // Update typewriter current item
         myTypeWriter.setString(welcomeMsgInfo[currItem]);
         myTypeWriter.write();
             
-        window.setTitle("Enemies: " + std::to_string(welcomeMsgInfo.size()) +
-                        " --------- Current Enemy: " + welcomeMsgData[currItem].name);
+        window.setTitle("Welcome: " + std::to_string(welcomeMsgInfo.size()) +
+                        " --------- Current: " + welcomeMsgData[currItem].name);
         
         
         // Clear the whole window before rendering a new frame
@@ -432,24 +462,31 @@ int main()
         // always draw the background grid.
         window.draw(backgroundGrid);
         
+        // need to setup the logic for these draws.
+        window.draw(*HitCard1);
+        window.draw(*HitCard2);
+        window.draw(*HitCard3);
+        window.draw(*HitCard4);
+        window.draw(*HitCard5);
         
-        // Test code for checking card display.
-//        for (auto it = spriteVector.begin(); it != spriteVector.end(); ++it)
-//        {
-//            window.draw(*it);
-//        }
-
         
         if (isWelcomeScreen == true)
         {
+            if (currItem == 3)
+            {
+                hasReachedEndOfTutorial = true;
+                window.draw(playBtn);
+                window.draw(beginMessage);
+                window.draw(myTypeWriter);
+                window.draw(welcomeMessage);
+            }
             // The inital load screen
             // Draw the messeges and the playBtn
-            window.draw(playBtn);
+            
             window.draw(myTypeWriter);
             window.draw(welcomeMessage);
-            window.draw(betDisplay1);
-            window.draw(betDisplay2);
-            window.draw(beginMessage);
+            
+            
         }
         
         // Then the Submit bet button and chips appear until the player submits the bet.
@@ -480,9 +517,13 @@ int main()
             /*
              // add a card drawing noise here to play quickly for 2 cards.
              */
-            
+
             window.draw(*firstCard);
             window.draw(*secondCard);
+            window.draw(cardBack);
+            // card back displays until player presses stay.
+//            window.draw(*dealerFirstCard);
+            window.draw(*dealerSecondCard);
         }
         
         // the window resized callback
@@ -493,8 +534,3 @@ int main()
     }
     
 }
-
-// the long click inside code global bounds code, maybe use later.
-//.contains(tempMouse) &&
-//event.type == sf::Event::MouseButtonReleased &&
-//event.key.code == sf::Mouse::Left
