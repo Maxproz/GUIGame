@@ -285,11 +285,13 @@ int main()
         error("Unable to load font from file");
     sf::Text welcomeMessage("Welcome to the BlackJack table!.", font, 60);
     sf::Text beginMessage("Click      to Begin playing.", font, 60);
-    sf::Text loseMessage("YOU LOSE", font, 80);
-    sf::Text winMessage("YOU WIN", font, 80);
+    sf::Text loseMessage("YOU LOSE", font, 120);
+    sf::Text winMessage("YOU WIN", font, 120);
     
-    loseMessage.move(400, 300);
-    loseMessage.move(400, 300);
+    loseMessage.move(200.f, 400.f);
+    winMessage.move(200.f, 400.f);
+
+    
     welcomeMessage.move(0, 0);
     beginMessage.move(0, 500.f);
     
@@ -358,6 +360,9 @@ int main()
     bool hasReachedEndOfTutorial = false;
     bool isDealersTurn = false;
     int hitCounter = 0;
+    bool isGameOverWithLose = false;
+    bool isGameOverWithWin = false;
+    
     
     sf::Sprite* firstCard = getFirstCardSprite(blackJackDeck, spriteVector, 0);
     sf::Sprite* secondCard = getFirstCardSprite(blackJackDeck, spriteVector, 1);
@@ -431,11 +436,11 @@ int main()
     // Program loop
     while(window.isOpen())
     {
-        sf::Time totalElapsedTime = clock.getElapsedTime();
-        sf::Time oneSecond = sf::seconds(1.f);
-        sf::Time twoSeconds = sf::seconds(2.f);
         
-        std::cout << totalElapsedTime.asSeconds() << std::endl;
+        sf::Time totalElapsedTime = clock.getElapsedTime();
+
+        
+//        std::cout << totalElapsedTime.asSeconds() << std::endl;
 //        clock.restart();
 //        map.update(window);
 //        
@@ -563,6 +568,7 @@ int main()
                     std::cout << "Hit Requested, new total: " << playersTotal << std::endl;
                 }
             }
+
             
             // Code for updating the events of my buttons
             playBtn.update(event,window);
@@ -583,6 +589,12 @@ int main()
         
         // Clear the whole window before rendering a new frame
         window.clear();
+        
+        if (isGameOverWithWin == true)
+            window.draw(winMessage);
+        
+        if (isGameOverWithLose == true)
+            window.draw(loseMessage);
         
         // always draw the background grid.
         window.draw(backgroundGrid);
@@ -656,6 +668,12 @@ int main()
                 window.draw(redChip);
                 window.draw(purpleChip);
             }
+            else if (hasStartingChips == true && isWelcomeScreen == false && isDealersTurn == false
+                     && isGameOverWithLose == true)
+            {
+                // Replace the submit bet button with these
+
+            }
             else
             {
                 // Replace the submit bet button with these
@@ -697,6 +715,8 @@ int main()
         // End the current frame and display its contents on screen.
         window.display();
         
+        
+        
         if (dealersTotal < 17 && isDealersTurn == true)
         {
 
@@ -704,7 +724,7 @@ int main()
             hitCounter += 1;
             if (hitCounter == 5)
             {
-                sleep(1);
+                sf::sleep(sf::seconds(1));
                 HitCard5->move(280, 0);
                 dealersTotal += getCardValue((*cardPtr++), dealersTotal);
                 std::cout << "Hit Requested, new total: " << dealersTotal << std::endl;
@@ -712,7 +732,7 @@ int main()
             
             if (hitCounter == 4)
             {
-                sleep(1);
+                sf::sleep(sf::seconds(1));
                 HitCard4->move(260, 0);
                 dealersTotal += getCardValue((*cardPtr++), dealersTotal);
                 std::cout << "Hit Requested, new total: " << dealersTotal << std::endl;
@@ -720,7 +740,7 @@ int main()
             
             if (hitCounter == 3)
             {
-                sleep(1);
+                sf::sleep(sf::seconds(1));
                 HitCard3->move(240, 0);
                 dealersTotal += getCardValue((*cardPtr++), dealersTotal);
                 std::cout << "Hit Requested, new total: " << dealersTotal << std::endl;
@@ -728,7 +748,7 @@ int main()
             
             if (hitCounter == 2)
             {
-                sleep(1);
+                sf::sleep(sf::seconds(1));
                 HitCard2->move(220, 0);
                 dealersTotal += getCardValue((*cardPtr++), dealersTotal);
                 std::cout << "Hit Requested, new total: " << dealersTotal << std::endl;
@@ -736,7 +756,7 @@ int main()
             
             if (hitCounter == 1)
             {
-                sleep(1);
+                sf::sleep(sf::seconds(1));
                 HitCard1->move(200, 0);
                 dealersTotal += getCardValue((*cardPtr++), dealersTotal);
                 std::cout << "Hit Requested, new total: " << dealersTotal << std::endl;
@@ -747,22 +767,29 @@ int main()
         // - before displaying the winner.
         
         // sleeping here does not work, and its a shitty solution anyway.
-        
-        
         if (playersTotal > 21)
         {
-            // display a lose message
+            isGameOverWithLose = true;
+            if (totalElapsedTime > sf::seconds(10))
+            {
+                std::cout << "You lose, over 21" << std::endl;
+                window.close();
+            }
+            // display a lose messaeg
             
-
-            std::cout << "You lose, over 21" << std::endl;
-            window.close();
+            
         }
         if (dealersTotal > 21)
         {
+            isGameOverWithWin = true;
             
-            
-            std::cout << "You win, dealer busts!" << std::endl;
-            window.close();
+            if (totalElapsedTime > sf::seconds(10))
+            {
+                std::cout << "You win, dealer busts!" << std::endl;
+                window.close();
+            }
         }
+        
+
     }
 }
